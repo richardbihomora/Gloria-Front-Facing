@@ -3,210 +3,289 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta property="og:title" content="Gloria" />
-    <meta property="og:description" content="Discover our innovative app for elderly home care, designed to support families and caregivers with better tools for wellness and connection." />
-    <meta property="og:image" content="/images/link-logo.png" />
+    <meta name="description" content="Gloria is a family engagement platform for senior living communities — photos, wellness updates, announcements, newsletters, and calendars in one place. Built for assisted living, memory care, and in-home care." />
+    <meta property="og:title" content="Gloria — Care that keeps families close" />
+    <meta property="og:description" content="Gloria connects caregivers and families with photos, wellness updates, announcements, newsletters, and calendars — bringing transparency and peace of mind to long-term care." />
+    <meta property="og:image" content="https://gloriatech.co/images/link-logo.png" />
     <meta property="og:image:alt" content="Gloria logo" />
     <meta property="og:url" content="https://gloriatech.co" />
     <meta property="og:type" content="website" />
-    <title>Home - Gloria</title>
-    <!-- Banner -->
-    <meta name="theme-color" content="#FFFFFF">
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://gloriatech.co/" />
+    <title>Gloria — Care that keeps families close</title>
+    <meta name="theme-color" content="#FDFAF7">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Gloria" />
     <link rel="manifest" href="/site.webmanifest" />
-    <!--Google Fonts API -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="/global.css">
-    <!--Script-->
-    <script type="module" src="/global.js"></script>
+    <link rel="stylesheet" href="/global.css?v=3">
+    <script type="module" src="/global.js?v=3"></script>
 </head>
 <body>
 
-    <div class="white-background">
     <!-- Header -->
     <header>
         <div class="branding branding-nav-flex">
             <a href="/" class="logo" id="logo">
                 <span>
-                    <img class="logo-img" alt="gloria logo" src="/images/logo.png">
+                    <img class="logo-img" alt="" aria-hidden="true" src="/images/logo.png">
                     <p class="logo-text">Gloria</p>
                 </span>
             </a>
-            <div class="nav">
-                <a class="nav-item" href="/about">About</a> 
-                <a class="nav-item" href="#contact">Contact</a>
+            <nav class="nav" aria-label="Main">
+                <a class="nav-item" href="/features">Features</a>
+                <a class="nav-item" href="/about">About</a>
+                <a class="nav-item" href="#how">How it works</a>
                 <a class="nav-item" href="#faq">FAQ</a>
-            </div>
+                <a class="nav-item" href="mailto:dave@gloriatech.co">Contact</a>
+            </nav>
         </div>
         <div class="nav">
-            <a class="nav-item-last" href="/demo">Get a Demo</a>            
+            <a class="nav-item-last" href="/demo">Get a Demo</a>
         </div>
-        <i class="fa-solid fa-bars" id="menu-button"></i>
+        <button class="menu-toggle" id="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
 
-        <!-- Hidden Menu -->
-        <div id="menu">
-            <a class="menu-item" href="/about">About</a> 
-            <a class="menu-item" href="#contact">Contact</a>  
+        <nav id="menu" aria-label="Mobile">
+            <a class="menu-item" href="/features">Features</a>
+            <a class="menu-item" href="/about">About</a>
+            <a class="menu-item" href="/#how">How it works</a>
+            <a class="menu-item" href="/#faq">FAQ</a>
+            <a class="menu-item" href="mailto:dave@gloriatech.co">Contact</a>
             <a class="menu-item" href="/demo">Get a Demo</a>
-            <a class="menu-item" href="/#faq">FAQ</a>             
-        </div>
+        </nav>
     </header>
 
-    
-    <div class="desktop-background">
+    <main>
 
-        <section class="intro-section">
-            <div class="hero-wireframe-flex">
 
-                <div class="mobile-background">
+    <!-- Hero -->
+    <section class="hero-split">
+        <div class="hero-copy">
+            <h1>Care that keeps<br>families <em>close</em></h1>
+            <p class="hero-sub">Gloria is a family engagement platform for senior living communities &mdash; bringing photos, wellness updates, announcements, newsletters, and calendars together so families never miss a moment.</p>
+            <div class="hero-actions">
+                <a id="hero-button" href="/demo">Get a Demo</a>
+                <a class="appstore-badge on-light" href="#" aria-label="Download Gloria on the App Store">
+                    <i class="fa-brands fa-apple" aria-hidden="true"></i>
+                    <span class="badge-text"><small>Download today on the</small><strong>App Store</strong></span>
+                </a>
+            </div>
+            <p class="hero-secondary">
+                <a class="hero-link" href="#how"><i class="fa-regular fa-circle-play" aria-hidden="true"></i> See how it works</a>
+            </p>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-arch">
+                <picture>
+                    <source srcset="/images/care-image-mobile.webp" type="image/webp">
+                    <img alt="A caregiver and an elderly resident smiling at a tablet together" src="/images/care-image-mobile.jpg">
+                </picture>
+            </div>
+            <div class="float-chip chip-photo">
+                <i class="fa-solid fa-camera" aria-hidden="true"></i>
+                <span class="chip-body"><strong>New photo shared</strong><small>2 minutes ago</small></span>
+            </div>
+            <div class="float-chip chip-mood">
+                <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                <span class="chip-body"><strong>Update</strong><small>Ann had a great morning</small></span>
+            </div>
+        </div>
+    </section>
 
-                    <!-- Hero -->
-                    <div class="hero">
-                        <h1>Stay Connected with Gloria</h1>
-                        <p>We’ve made connecting caregivers and family a breeze</p>
-                        <button onclick="location.href='/demo'" id="hero-button">
-                            Get a Demo 
-                        </button>
+
+    <!-- Care settings banner -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+            <span class="marq-item">Independent Living</span><span class="marq-sep"></span>
+            <span class="marq-item">Assisted Living</span><span class="marq-sep"></span>
+            <span class="marq-item">Memory Care</span><span class="marq-sep"></span>
+            <span class="marq-item">In-Home Care</span>
+        </div>
+    </div>
+    <p class="sr-only">Serving Independent Living, Assisted Living, Memory Care, and In-Home Care communities.</p>
+
+
+    <!-- Bento features -->
+    <section class="bento-section reveal" id="features">
+        <h2 class="section-header">Everything families need to feel close</h2>
+        <p class="section-subhead">One app for the moments, the updates, and the everyday logistics of care.</p>
+
+        <div class="bento">
+
+            <div class="bento-tile bento-chat">
+                <div class="chat-mock" aria-hidden="true">
+                    <div class="bubble staff">
+                        <span class="bubble-name">Cedar Creek Staff</span>
+                        <p>Ann enjoyed her morning walk in the garden today</p>
                     </div>
-
+                    <div class="bubble staff">
+                        <p>Photos from the walk are now in the family feed</p>
+                    </div>
                 </div>
-            
-
-                <!-- Wireframes -->
-                <div class="wireframe-flex">
-                    <div class="tablet-frame-div">
-                        <picture>
-                            <source srcset="/images/tablet-frame.webp" type="image/webp">
-                            <img alt="tablet wireframe" src="/images/tablet-frame.png" id="tablet-frame">
-                        </picture>
-                    </div>    
-                    <div class="mobile-frame-div">
-                        <picture>
-                            <source srcset="/images/mobile-frame.webp" type="image/webp">
-                            <img alt="mobile wireframe" src="/images/mobile-frame.png" id="mobile-frame">
-                        </picture>
-                    </div>    
+                <div class="wellness-summary" aria-hidden="true">
+                    <span><i class="fa-regular fa-face-smile"></i>Mood: Great</span>
+                    <span><i class="fa-solid fa-person-walking"></i>Activity: Garden walk</span>
+                    <span><i class="fa-solid fa-heart-pulse"></i>Well-being: Good</span>
                 </div>
-                
-
+                <h3>Wellness updates</h3>
+                <p>Mood, activities, and well-being &mdash; tracked and shared.</p>
             </div>
 
-            <!-- Features -->
-            <div class="features">
-                <div class="features-item">
-                    <img class="features-icon" alt="chat icon" src="/images/chat-icon.svg">
-                    <p class="features-title">Chat</p>
-                    <p class="features-description">Families chat with staff directly through the Gloria app.</p>
+            <div class="bento-tile bento-photos">
+                <div class="bento-photo-frame" aria-hidden="true">
+                    <picture>
+                        <source srcset="/images/tablet-frame.webp" type="image/webp">
+                        <img alt="" src="/images/tablet-frame.png">
+                    </picture>
                 </div>
-                <div class="features-item">
-                    <img class="features-icon" alt="camera icon" src="/images/camera-icon.svg">
-                    <p class="features-title">Photos</p>
-                    <p class="features-description">Share photos of residents to keep families updated.</p>
-                </div>
-                <div class="features-item">
-                    <img class="features-icon" alt="update icon" src="/images/update-icon.svg">
-                    <p class="features-title">Wellness Updates</p>
-                    <p class="features-description">Track mood, activities, and well-being</p>
-                </div>
-                <div class="features-item">
-                    <img class="features-icon" alt="note icon" src="/images/note-icon.svg">
-                    <p class="features-title">Care Notes</p>
-                    <p class="features-description">Personalized notes highlight key moments, challenges, and needs.</p>
-                </div>
-                <div class="features-item">
-                    <img class="features-icon" alt="supply icon" src="/images/supply-icon.svg">
-                    <p class="features-title">Supply Requests</p>
-                    <p class="features-description">Request essential items like toiletries and clothing.</p>
-                </div>
-                <div class="features-item">
-                    <img class="features-icon" alt="transparency icon" src="/images/transparency-icon.svg">
-                    <p class="features-title">Transparency</p>
-                    <p class="features-description">Families gain peace of mind knowing loved ones receive great care.</p>
-                </div>
+                <h3>Simple for staff, meaningful for families</h3>
+                <p>Staff in your facility share updates in seconds, right from the floor.</p>
             </div>
-            
-        </section>
 
-    </div>
-    </div>
-    <!-- Image Section -->
-    <section class="image-section">
-        <picture>
-            <!-- WebP format for browsers that support it -->
-            <source srcset="/images/care-image.webp" type="image/webp"> 
-            <!-- Fallback for browsers that do not support WebP -->
-            <img class="care-image" alt="elderly care image" src="/images/care-image.jpg" hidden>
-        </picture>
-        <picture>
-            <!-- WebP format for mobile images -->
-            <source srcset="/images/care-image-mobile.webp" type="image/webp">
-            <!-- Fallback for mobile images -->
-            <img class="care-image-mobile" alt="elderly care image" src="/images/care-image-mobile.jpg">
-        </picture>
-        <p class="image-section-text">
-            We bridge the gap between home and family. Join the families and caregivers who trust Gloria to simplify communication and provide better care for their loved ones
-            <br><br>
-            <a href="/demo">Join Us Today!</a>
-        </p>
+            <div class="bento-tile">
+                <img class="bento-icon" alt="" aria-hidden="true" src="/images/moments-icon.svg">
+                <h3>Share the moments</h3>
+                <p>Photos of daily life keep families part of the story.</p>
+            </div>
+
+            <div class="bento-tile">
+                <img class="bento-icon" alt="" aria-hidden="true" src="/images/newsletter-icon.svg">
+                <h3>Newsletter &amp; calendar</h3>
+                <p>A monthly newsletter and shared calendar keep families part of facility life.</p>
+            </div>
+
+            <div class="bento-tile bento-wide">
+                <img class="bento-icon" alt="" aria-hidden="true" src="/images/announce-icon.svg">
+                <h3>Announcements</h3>
+                <p>Facility news and events, shared with every family at once.</p>
+            </div>
+
+            <div class="bento-tile bento-wide bento-stat">
+                <p class="stat-figure">24/7</p>
+                <h3>Full transparency</h3>
+                <p>Families see the care as it happens &mdash; and gain peace of mind.</p>
+            </div>
+
+        </div>
     </section>
 
 
-    <!-- FAQ Section  -->
-     <section class="faq-section" id="faq">
-        <h2 class="faq-header">FAQ</h2>
-        <hr/>
-        <div class="question">
-            <p>What is Gloria?</p>
-            <p class="faq-toggle"><i class="fa-solid fa-plus"></i></p>
+    <!-- How it works -->
+    <section class="how-section reveal" id="how">
+        <h2 class="section-header">How Gloria works</h2>
+        <p class="section-subhead">One simple flow keeps staff, residents, and families on the same page.</p>
+        <div class="timeline">
+            <div class="tl-step">
+                <span class="tl-dot">1</span>
+                <h3 class="tl-title">Staff share updates</h3>
+                <p class="tl-text">Caregivers post photos, wellness updates, and care notes in seconds &mdash; right from the floor.</p>
+            </div>
+            <div class="tl-step">
+                <span class="tl-dot">2</span>
+                <h3 class="tl-title">Families stay informed</h3>
+                <p class="tl-text">Loved ones get notified instantly and follow every update, wherever they are.</p>
+            </div>
+            <div class="tl-step">
+                <span class="tl-dot">3</span>
+                <h3 class="tl-title">Everyone stays coordinated</h3>
+                <p class="tl-text">Announcements, newsletters, calendars, and moments live in one place, so nothing slips through the cracks.</p>
+            </div>
         </div>
-        <p class="answer">Gloria is a communication platform that connects care staff with families, streamlining updates and ensuring transparency in long-term care.</p>
-        <hr/>
-        <div class="question">
-            <p>Who is Gloria for?</p>
-            <p class="faq-toggle"><i class="fa-solid fa-plus"></i></p>
-        </div>
-        <p class="answer">Gloria is built for care facilities and the families of their residents, making communication easier and transparent.</p>
-        <hr/>
-        <div class="question">
-            <p>How does the Gloria app work?</p>
-            <p class="faq-toggle"><i class="fa-solid fa-plus"></i></p>
-        </div>
-        <p class="answer">Gloria allows care staff to share updates and photos with families. It also offers secure messaging between staff and family members, as well as internal communication among staff. It keeps everyone connected, informed, and coordinated.</p>
-        <hr/>
-        <div class="question">
-            <p>What if my question isn't listed here?</p>
-            <p class="faq-toggle"><i class="fa-solid fa-plus"></i></p>
-        </div>
-        <p class="answer">For any questions or concerns, email <a class="faq-email" href="mailto:dave@gloriatech.co">dave@gloriatech.co</a> We’re here to help!</p>
-        <hr/>
     </section>
+
+
+    <!-- Closing panel -->
+    <section class="closing-panel reveal">
+        <div class="closing-copy">
+            <h2>We bridge the gap between <em>home</em> and <em>family</em></h2>
+            <p class="closing-text">Join the families and caregivers who trust Gloria to simplify communication and provide better care for their loved ones.</p>
+            <a class="closing-button" href="/demo">Get a Demo</a>
+        </div>
+        <div class="closing-photo">
+            <picture>
+                <source srcset="/images/closing-image.webp" type="image/webp">
+                <img alt="Grandparents laughing with their two granddaughters outside in the evening sun" src="/images/closing-image.jpg">
+            </picture>
+        </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="faq-intro">
+            <h2 class="faq-header">Questions, answered</h2>
+            <p class="faq-blurb">Everything you're wondering about Gloria. If it's not here, we're one email away.</p>
+            <a class="faq-contact" href="mailto:dave@gloriatech.co">dave@gloriatech.co <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="faq-list">
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-1">
+                <p>What is Gloria?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-1">Gloria is a communication platform that connects care staff with families, streamlining updates and ensuring transparency in long-term care.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-2">
+                <p>Who is Gloria for?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-2">Gloria is built for care facilities and the families of their residents, making communication easier and transparent.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-3">
+                <p>How does the Gloria app work?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-3">Gloria lets care staff share photos, wellness updates, announcements, a monthly newsletter, and a shared calendar with families &mdash; keeping everyone connected, informed, and coordinated. Direct family messaging is coming in v2.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-4">
+                <p>What if my question isn't listed here?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-4">For any questions or concerns, email <a class="faq-email" href="mailto:dave@gloriatech.co">dave@gloriatech.co</a> &mdash; we&rsquo;re here to help!</p>
+        </div>
+    </section>
+
+    </main>
 
 
     <!-- Footer -->
     <footer id="contact">
-        <div class="contact">
+        <div class="footer-brand">
+            <span class="footer-logo">
+                <img class="logo-img" alt="" aria-hidden="true" src="/images/logo.png">
+                <p class="logo-text">Gloria</p>
+            </span>
+            <p class="footer-tagline">Connecting caregivers and families for better care.</p>
+            <a class="appstore-badge" href="#" aria-label="Download Gloria on the App Store">
+                <i class="fa-brands fa-apple" aria-hidden="true"></i>
+                <span class="badge-text"><small>Download today on the</small><strong>App Store</strong></span>
+            </a>
+        </div>
+        <div class="footer-col">
+            <p class="footer-title">Explore</p>
+            <p class="footer-item"><a href="/features">Features</a></p>
+            <p class="footer-item"><a href="/about">About</a></p>
+            <p class="footer-item"><a href="/#how">How it works</a></p>
+            <p class="footer-item"><a href="/#faq">FAQ</a></p>
+            <p class="footer-item"><a href="/demo">Get a Demo</a></p>
+        </div>
+        <div class="footer-col">
             <p class="footer-title">Contact</p>
             <span class="footer-item">
-                <i class="fa-solid fa-envelope"></i>
-                <p><a href="mailto:dave@gloriatech.co">dave@gloriatech.co</a></p>
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <a href="mailto:dave@gloriatech.co">dave@gloriatech.co</a>
             </span>
-        </div>
-        <div class="our-company">
-            <p class="footer-title">Company</p>
             <p class="footer-item"><a href="/policy">Privacy Policy</a></p>
         </div>
-    </footer>    
+    </footer>
 
-
-</body>   
+</body>
 </html>

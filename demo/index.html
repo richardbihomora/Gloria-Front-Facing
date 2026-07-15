@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <!-- For Android -->
-    <meta name="theme-color" content="#FFFFFF">
-    <!-- For iOS -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Book a walkthrough of Gloria — see how Gloria keeps care staff and families connected with photos, wellness updates, announcements, newsletters, and calendars." />
     <title>Get a Demo - Gloria</title>
-    <!-- Banner -->
-    <meta name="theme-color" content="#FAFAFA">
+    <meta name="theme-color" content="#FDFAF7">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!--Google Fonts API -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Gloria" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://gloriatech.co/demo" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="/global.css">
-    <!--Script-->
-    <script type="module" src="/global.js"></script>
+    <link rel="stylesheet" href="/global.css?v=3">
+    <script type="module" src="/global.js?v=3"></script>
 </head>
 <body>
    
@@ -29,31 +29,36 @@
         <div class="branding branding-nav-flex">
             <a href="/" class="logo" id="logo">
                 <span>
-                    <img class="logo-img" alt="gloria logo" src="/images/logo.png">
+                    <img class="logo-img" alt="" aria-hidden="true" src="/images/logo.png">
                     <p class="logo-text">Gloria</p>
                 </span>
             </a>
-            <div class="nav">
-                <a class="nav-item" href="/about">About</a> 
-                <a class="nav-item" href="#contact">Contact</a>
+            <nav class="nav" aria-label="Main">
+                <a class="nav-item" href="/features">Features</a>
+                <a class="nav-item" href="/about">About</a>
+                <a class="nav-item" href="/#how">How it works</a>
                 <a class="nav-item" href="/#faq">FAQ</a>
-            </div>
+                <a class="nav-item" href="mailto:dave@gloriatech.co">Contact</a>
+            </nav>
         </div>
         <div class="nav">
-            <a class="nav-item-last" href="/demo">Get a Demo</a>            
+            <a class="nav-item-last" href="/demo">Get a Demo</a>
         </div>
-        <i class="fa-solid fa-bars" id="menu-button"></i>
-
-        <!-- Hidden Menu -->
-        <div id="menu">
-            <a class="menu-item" href="/about">About</a> 
-            <a class="menu-item" href="#contact">Contact</a>  
+        <button class="menu-toggle" id="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+        <nav id="menu" aria-label="Mobile">
+            <a class="menu-item" href="/features">Features</a>
+            <a class="menu-item" href="/about">About</a>
+            <a class="menu-item" href="/#how">How it works</a>
+            <a class="menu-item" href="/#faq">FAQ</a>
+            <a class="menu-item" href="mailto:dave@gloriatech.co">Contact</a>
             <a class="menu-item" href="/demo">Get a Demo</a>
-            <a class="menu-item" href="/#faq">FAQ</a>             
-        </div>
+        </nav>
     </header>
 
 
+    <main>
     <!-- Form Section -->
     <form class="demo" action="https://formsubmit.co/dave@gloriatech.co" method="POST" >
 
@@ -61,10 +66,8 @@
         <input type="hidden" name="_next" value="https://gloriatech.co/demo/confirmation">
         <!-- Hidden disable spam protection -->
         <input type="hidden" name="_captcha" value="false">
-        <!-- Hidden message template style -->     
+        <!-- Hidden message template style -->
         <input type="hidden" name="_template" value="table">
-        <!-- Disable reCAPTCHA -->
-        <input type="hidden" name="_captcha" value="false">
         <!-- Honeypot field (for bots only) -->
         <input type="text" name="_honey" style="display:none">
 
@@ -73,18 +76,18 @@
         <div class="demo-form-flex">
             <div class="demo-flex-item">
                 <label for="name" id="name-label">Name *</label>
-                <div class="error-message" ></div>
-                <input 
-                    class="form-control" 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    placeholder="Enter your name" 
-                    aria-required="true" 
-                    aria-labelledby="name-label" 
-                    title="Please enter your name."
-                    required 
+                <input
+                    class="form-control"
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    aria-required="true"
+                    aria-labelledby="name-label"
+                    aria-describedby="name-error"
+                    required
                 />
+                <div class="error-message" id="name-error" role="alert"></div>
             </div>
             <div class="demo-flex-item">
                 <label for="phone-number" id="phone-number-label">Phone number</label>
@@ -97,8 +100,9 @@
                     aria-required="false" 
                     aria-labelledby="phone-number-label"
                     pattern="^\s*\+?\s*(\d[\s\-\(\)\.]{0,2}){10,15}(ext\.?|x|#)?\s*\d{0,5}\s*$"
+                    aria-describedby="phone-number-error"
                 />
-                <div class="error-message"></div>
+                <div class="error-message" id="phone-number-error" role="alert"></div>
             </div>            
             <div class="demo-flex-item">
                 <label for="email" id="email-label">Business Email *</label>
@@ -109,10 +113,11 @@
                     name="email" 
                     placeholder="Enter your business email" 
                     aria-required="true" 
-                    aria-labelledby="email-label" 
-                    required 
+                    aria-labelledby="email-label"
+                    aria-describedby="email-error"
+                    required
                 />
-                <div class="error-message" ></div>
+                <div class="error-message" id="email-error" role="alert"></div>
             </div>
             <div class="demo-flex-item">
                 <label for="company-type" id="company-type-label">Which best describes your company? *</label>
@@ -121,7 +126,8 @@
                     id="company-type" 
                     name="company-type" 
                     aria-required="true" 
-                    aria-labelledby="company-type-label" 
+                    aria-labelledby="company-type-label"
+                    aria-describedby="company-type-error"
                     required
                 >
                     <option value="" disabled selected>Select a company type</option>
@@ -131,7 +137,7 @@
                     <option value="In-Home Care">In-Home Care</option>
                     <option value="Other">Other</option>
                 </select>
-                <div class="error-message" ></div>
+                <div class="error-message" id="company-type-error" role="alert"></div>
             </div>
             <div class="demo-flex-item full-width">
                 <label for="hear-about" id="hear-about-label">How did you hear about us? *</label>
@@ -140,7 +146,8 @@
                     id="hear-about" 
                     name="hear-about" 
                     aria-required="true" 
-                    aria-labelledby="hear-about-label" 
+                    aria-labelledby="hear-about-label"
+                    aria-describedby="hear-about-error"
                     required
                 >
                     <option value="" disabled selected>Select how you heard about us</option>
@@ -149,7 +156,7 @@
                     <option value="Social Media">Social Media</option>
                     <option value="Other">Other</option>
                 </select>
-                <div class="error-message"></div>
+                <div class="error-message" id="hear-about-error" role="alert"></div>
             </div>
             <div class="demo-flex-item full-width">
                 <label for="help-you" id="help-you-label">Additional Notes</label>
@@ -163,20 +170,37 @@
             <a href="/policy"><u>Privacy Policy</u></a>.
         </p>
     </form>
+    </main>
 
 
-    
+
     <!-- Footer -->
     <footer id="contact">
-        <div class="contact">
+        <div class="footer-brand">
+            <span class="footer-logo">
+                <img class="logo-img" alt="" aria-hidden="true" src="/images/logo.png">
+                <p class="logo-text">Gloria</p>
+            </span>
+            <p class="footer-tagline">Connecting caregivers and families for better care.</p>
+            <a class="appstore-badge" href="#" aria-label="Download Gloria on the App Store">
+                <i class="fa-brands fa-apple" aria-hidden="true"></i>
+                <span class="badge-text"><small>Download today on the</small><strong>App Store</strong></span>
+            </a>
+        </div>
+        <div class="footer-col">
+            <p class="footer-title">Explore</p>
+            <p class="footer-item"><a href="/features">Features</a></p>
+            <p class="footer-item"><a href="/about">About</a></p>
+            <p class="footer-item"><a href="/#how">How it works</a></p>
+            <p class="footer-item"><a href="/#faq">FAQ</a></p>
+            <p class="footer-item"><a href="/demo">Get a Demo</a></p>
+        </div>
+        <div class="footer-col">
             <p class="footer-title">Contact</p>
             <span class="footer-item">
-                <i class="fa-solid fa-envelope"></i>
-                <p><a href="mailto:dave@gloriatech.co">dave@gloriatech.co</a></p>
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <a href="mailto:dave@gloriatech.co">dave@gloriatech.co</a>
             </span>
-        </div>
-        <div class="our-company">
-            <p class="footer-title">Company</p>
             <p class="footer-item"><a href="/policy">Privacy Policy</a></p>
         </div>
     </footer>      
