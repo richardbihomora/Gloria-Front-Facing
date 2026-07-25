@@ -561,6 +561,29 @@ footer a, footer p, footer i { color: #EAE4DE; }
     padding: 0.5rem;
 }
 
+@media (max-width: 639px) {
+    .hero-split {
+        padding: 1.75rem 1.25rem 2.75rem;
+        gap: 2rem;
+    }
+    .hero-eyebrow { margin-bottom: 0.85rem; }
+    .hero-copy h1 { margin-bottom: 1rem; line-height: 1.1; }
+    .hero-sub {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+    .hero-actions { gap: 0.9rem; align-items: stretch; }
+    #hero-button { padding: 1rem 2rem; font-size: 1rem; }
+    .appstore-badge.on-light { margin-top: 0; padding: 0.75rem 1.2rem; }
+    .hero-link {
+        margin-left: 0;
+        align-self: center;
+        padding: 0.55rem 0.9rem;
+    }
+    .hero-secondary { margin-top: 0.5rem; }
+}
+
 .hero-arch {
     border-radius: 999px 999px 28px 28px;
     overflow: hidden;
