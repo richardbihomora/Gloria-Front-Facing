@@ -629,7 +629,18 @@ footer a, footer p, footer i { color: #EAE4DE; }
 
 /* Narrow screens: one smaller chip, kept inside the photo bounds */
 @media (max-width: 639px) {
-    .chip-photo { display: none; }
+    .chip-photo {
+        top: 4%;
+        left: 4%;
+        right: auto;
+        padding: 0.55rem 0.85rem;
+        border-radius: 0.9rem;
+    }
+
+    .chip-photo i {
+        padding: 0.45rem;
+        font-size: 0.8rem;
+    }
 
     .chip-mood {
         right: 4%;
