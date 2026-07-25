@@ -713,6 +713,20 @@ footer a, footer p, footer i { color: #EAE4DE; }
     flex-shrink: 0;
 }
 
+@media (max-width: 640px) {
+    .marquee-track {
+        gap: 0.5rem 1.5rem;
+        padding: 0 1rem;
+    }
+    .marq-item { font-size: 1rem; }
+}
+
+@media (max-width: 440px) {
+    .marquee-track { gap: 0.5rem 1rem; }
+    .marq-item { font-size: 0.95rem; }
+    .marq-sep { display: none; }
+}
+
 /******************************** INDEX — BENTO FEATURES *****************************/
 
 .bento-section {
