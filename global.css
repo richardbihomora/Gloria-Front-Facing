@@ -331,7 +331,7 @@ footer::after {
     bottom: -60px;
     width: 240px;
     height: 240px;
-    background: url('/images/logo.png') no-repeat center / contain;
+    background: url('images/logo.png') no-repeat center / contain;
     opacity: 0.08;
     pointer-events: none;
 }
@@ -1836,7 +1836,7 @@ select.error { background-color: #FFF1EA; }
     bottom: -44px;
     width: 190px;
     height: 190px;
-    background: url('/images/logo.png') no-repeat center / contain;
+    background: url('images/logo.png') no-repeat center / contain;
     opacity: 0.09;
     pointer-events: none;
 }

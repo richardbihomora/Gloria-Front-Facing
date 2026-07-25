@@ -84,7 +84,7 @@ function buildContactModal() {
       <button class="contact-close" aria-label="Close contact card"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       <div class="card-top">
         <div class="card-brand">
-          <img src="/images/logo.png" alt="" aria-hidden="true">
+          <img src="images/logo.png" alt="" aria-hidden="true">
           <span class="card-wordmark">Gloria</span>
         </div>
         <p class="card-tagline">Care that keeps families close</p>
