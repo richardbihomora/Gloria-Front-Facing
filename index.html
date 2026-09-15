@@ -4,8 +4,8 @@
     <base href="/Gloria-Front-Facing/">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Gloria is a family engagement platform for senior living communities — photos, wellness updates, announcements, newsletters, and calendars in one place. Built for assisted living, memory care, and in-home care." />
-    <meta property="og:title" content="Gloria — Care that keeps families close" />
+    <meta name="description" content="Gloria helps senior living communities share meaningful updates, photos, announcements, and events with families in one simple, private platform." />
+    <meta property="og:title" content="Gloria — Keep families connected. Without adding to staff workloads." />
     <meta property="og:description" content="Gloria connects caregivers and families with photos, wellness updates, announcements, newsletters, and calendars — bringing transparency and peace of mind to long-term care." />
     <meta property="og:image" content="https://gloriatech.co/images/link-logo.png" />
     <meta property="og:image:alt" content="Gloria logo" />
@@ -13,7 +13,7 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" href="https://gloriatech.co/" />
-    <title>Gloria — Care that keeps families close</title>
+    <title>Gloria — Keep families connected, without adding to staff workloads</title>
     <meta name="theme-color" content="#FDFAF7">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
@@ -26,8 +26,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="global.css?v=3">
-    <script type="module" src="global.js?v=3"></script>
+    <link rel="stylesheet" href="global.css?v=5">
+    <script type="module" src="global.js?v=5"></script>
 </head>
 <body>
 
@@ -42,9 +42,10 @@
             </a>
             <nav class="nav" aria-label="Main">
                 <a class="nav-item" href="features">Features</a>
+                <a class="nav-item" href="pricing">Pricing</a>
                 <a class="nav-item" href="about">About</a>
-                <a class="nav-item" href="#how">How it works</a>
-                <a class="nav-item" href="#faq">FAQ</a>
+                <a class="nav-item" href="./#how">How it works</a>
+                <a class="nav-item" href="./#faq">FAQ</a>
                 <a class="nav-item" href="mailto:dave@gloriatech.co">Contact</a>
             </nav>
         </div>
@@ -57,9 +58,10 @@
 
         <nav id="menu" aria-label="Mobile">
             <a class="menu-item" href="features">Features</a>
+            <a class="menu-item" href="pricing">Pricing</a>
             <a class="menu-item" href="about">About</a>
-            <a class="menu-item" href="#how">How it works</a>
-            <a class="menu-item" href="#faq">FAQ</a>
+            <a class="menu-item" href="./#how">How it works</a>
+            <a class="menu-item" href="./#faq">FAQ</a>
             <a class="menu-item" href="mailto:dave@gloriatech.co">Contact</a>
             <a class="menu-item" href="demo">Get a Demo</a>
         </nav>
@@ -71,8 +73,8 @@
     <!-- Hero -->
     <section class="hero-split">
         <div class="hero-copy">
-            <h1>Care that keeps<br>families <em>close</em></h1>
-            <p class="hero-sub">Gloria is a family engagement platform for senior living communities &mdash; bringing photos, wellness updates, announcements, newsletters, and calendars together so families never miss a moment.</p>
+            <h1>Keep families <em>connected</em>.<br>Without adding to staff workloads.</h1>
+            <p class="hero-sub">Gloria helps senior living communities share meaningful updates, photos, announcements, and events with families in one simple, private platform.</p>
             <div class="hero-actions">
                 <a id="hero-button" href="demo">Get a Demo</a>
                 <a class="appstore-badge on-light" href="#" aria-label="Download Gloria on the App Store">
@@ -103,77 +105,67 @@
     </section>
 
 
-    <!-- Care settings banner -->
-    <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-            <span class="marq-item">Independent Living</span><span class="marq-sep"></span>
-            <span class="marq-item">Assisted Living</span><span class="marq-sep"></span>
-            <span class="marq-item">Memory Care</span><span class="marq-sep"></span>
-            <span class="marq-item">In-Home Care</span>
-        </div>
-    </div>
-    <p class="sr-only">Serving Independent Living, Assisted Living, Memory Care, and In-Home Care communities.</p>
-
-
     <!-- Bento features -->
     <section class="bento-section reveal" id="features">
         <h2 class="section-header">Everything families need to feel close</h2>
-        <p class="section-subhead">One app for the moments, the updates, and the everyday logistics of care.</p>
+        <p class="section-subhead">Photos, updates, announcements, newsletters, and events &mdash; in one simple, private app that families will love.</p>
 
         <div class="bento">
 
             <div class="bento-tile bento-chat">
-                <div class="chat-mock" aria-hidden="true">
-                    <div class="bubble staff">
-                        <span class="bubble-name">Cedar Creek Staff</span>
-                        <p>Ann enjoyed her morning walk in the garden today</p>
+                <article class="post-mock" aria-hidden="true">
+                    <div class="post-head">
+                        <span class="post-avatar">JR</span>
+                        <span class="post-meta"><strong>Jennifer Reed</strong><small>Maple Grove Senior Living &middot; Today, 9:14 AM</small></span>
                     </div>
-                    <div class="bubble staff">
-                        <p>Photos from the walk are now in the family feed</p>
+                    <p class="post-text">Ann led our garden walk this morning &mdash; sunshine, the roses in full bloom, and a long stop at the koi pond. She&rsquo;s already asked to go again tomorrow.</p>
+                    <picture class="post-photo">
+                        <source srcset="images/post-walk.webp?v=5" type="image/webp">
+                        <img alt="" src="images/post-walk.jpg?v=5">
+                    </picture>
+                    <div class="post-actions">
+                        <span><i class="fa-solid fa-heart" aria-hidden="true"></i> 4</span>
+                        <span><i class="fa-regular fa-comment" aria-hidden="true"></i> 2</span>
+                        <span class="post-family">Seen by Ann&rsquo;s family</span>
                     </div>
-                </div>
-                <div class="wellness-summary" aria-hidden="true">
-                    <span><i class="fa-regular fa-face-smile"></i>Mood: Great</span>
-                    <span><i class="fa-solid fa-person-walking"></i>Activity: Garden walk</span>
-                    <span><i class="fa-solid fa-heart-pulse"></i>Well-being: Good</span>
-                </div>
-                <h3>Wellness updates</h3>
-                <p>Mood, activities, and well-being &mdash; tracked and shared.</p>
+                </article>
+                <h3>Share meaningful updates</h3>
+                <p>Help families feel connected with quick photo and text updates from daily life in your community.</p>
             </div>
 
             <div class="bento-tile bento-photos">
                 <div class="bento-photo-frame" aria-hidden="true">
                     <picture>
-                        <source srcset="images/tablet-frame.webp" type="image/webp">
-                        <img alt="" src="images/tablet-frame.png">
+                        <source srcset="images/tablet-frame.webp?v=5" type="image/webp">
+                        <img alt="" src="images/tablet-frame.png?v=5">
                     </picture>
                 </div>
-                <h3>Simple for staff, meaningful for families</h3>
-                <p>Staff in your facility share updates in seconds, right from the floor.</p>
+                <h3>Simple staff app</h3>
+                <p>Post updates in seconds without interrupting your team's day.</p>
             </div>
 
             <div class="bento-tile">
                 <img class="bento-icon" alt="" aria-hidden="true" src="images/moments-icon.svg">
-                <h3>Share the moments</h3>
-                <p>Photos of daily life keep families part of the story.</p>
+                <h3>Family news feed</h3>
+                <p>A private feed where approved family members see updates, photos, and announcements in one place.</p>
             </div>
 
             <div class="bento-tile">
                 <img class="bento-icon" alt="" aria-hidden="true" src="images/newsletter-icon.svg">
-                <h3>Newsletter &amp; calendar</h3>
-                <p>A monthly newsletter and shared calendar keep families part of facility life.</p>
+                <h3>Newsletters &amp; calendar</h3>
+                <p>Publish newsletters and share upcoming events so families always know what's happening.</p>
             </div>
 
             <div class="bento-tile bento-wide">
                 <img class="bento-icon" alt="" aria-hidden="true" src="images/announce-icon.svg">
-                <h3>Announcements</h3>
-                <p>Facility news and events, shared with every family at once.</p>
+                <h3>Community announcements</h3>
+                <p>Important news, reminders, and schedule changes &mdash; shared with every family at once.</p>
             </div>
 
             <div class="bento-tile bento-wide bento-stat">
-                <p class="stat-figure">24/7</p>
-                <h3>Full transparency</h3>
-                <p>Families see the care as it happens &mdash; and gain peace of mind.</p>
+                <p class="stat-figure">Private</p>
+                <h3>Secure &amp; private</h3>
+                <p>Updates are only visible to approved family members and authorized staff.</p>
             </div>
 
         </div>
@@ -187,19 +179,53 @@
         <div class="timeline">
             <div class="tl-step">
                 <span class="tl-dot">1</span>
-                <h3 class="tl-title">Staff share updates</h3>
-                <p class="tl-text">Caregivers post photos, wellness updates, and care notes in seconds &mdash; right from the floor.</p>
+                <h3 class="tl-title">Staff post in seconds</h3>
+                <p class="tl-text">From the staff app, your team shares photos and updates from daily life &mdash; with AI-assisted drafts, no one stares at a blank screen.</p>
             </div>
             <div class="tl-step">
                 <span class="tl-dot">2</span>
-                <h3 class="tl-title">Families stay informed</h3>
-                <p class="tl-text">Loved ones get notified instantly and follow every update, wherever they are.</p>
+                <h3 class="tl-title">Families see it in their feed</h3>
+                <p class="tl-text">Approved family members get notified and follow every update, announcement, newsletter, and event in the family app.</p>
             </div>
             <div class="tl-step">
                 <span class="tl-dot">3</span>
-                <h3 class="tl-title">Everyone stays coordinated</h3>
-                <p class="tl-text">Announcements, newsletters, calendars, and moments live in one place, so nothing slips through the cracks.</p>
+                <h3 class="tl-title">Admins stay in control</h3>
+                <p class="tl-text">The admin portal manages staff accounts, posting permissions, and community content from one place.</p>
             </div>
+        </div>
+    </section>
+
+
+    <!-- Why Gloria -->
+    <section class="why-section reveal" id="why">
+        <h2 class="section-header">Why Gloria?</h2>
+        <p class="section-subhead">Built for the way senior living communities actually work.</p>
+        <div class="why-grid">
+            <article class="why-card">
+                <span class="why-num">1</span>
+                <h3>You can update families already. But how often do you?</h3>
+                <p>With Gloria, family updates are efficient, easy, and delegable &mdash; the work no longer falls on one or two people's plate.</p>
+            </article>
+            <article class="why-card">
+                <span class="why-num">2</span>
+                <h3>Increase family satisfaction and transparency</h3>
+                <p>Make your community a sure thing on tours. Consistent updates and timely communication &mdash; no leaving families in the dark.</p>
+            </article>
+            <article class="why-card">
+                <span class="why-num">3</span>
+                <h3>Easy setup and onboarding</h3>
+                <p>Unlike other senior living software, Gloria doesn't need a complex workflow to get running. Give us a few days and your community is ready to roll.</p>
+            </article>
+            <article class="why-card">
+                <span class="why-num">4</span>
+                <h3>Simple to share. Simple to use.</h3>
+                <p>Chances are your staff and resident families already know how to use Gloria &mdash; they just haven't yet. No in-depth training required, and we're always here to help.</p>
+            </article>
+            <article class="why-card why-card-wide">
+                <span class="why-num">5</span>
+                <h3>A family-focused experience</h3>
+                <p>Gloria is something your families (and staff) will actually use. No complicated logins, no maze of menus &mdash; just a simple app on their phone or tablet that gives them a window into their loved one's day.</p>
+            </article>
         </div>
     </section>
 
@@ -224,7 +250,7 @@
     <section class="faq-section" id="faq">
         <div class="faq-intro">
             <h2 class="faq-header">Questions, answered</h2>
-            <p class="faq-blurb">Everything you're wondering about Gloria. If it's not here, we're one email away.</p>
+            <p class="faq-blurb">Everything you're wondering about Gloria &mdash; the product and the pricing. If it's not here, we're one email away.</p>
             <a class="faq-contact" href="mailto:dave@gloriatech.co">dave@gloriatech.co <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         <div class="faq-list">
@@ -232,25 +258,61 @@
                 <p>What is Gloria?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-1">Gloria is a communication platform that connects care staff with families, streamlining updates and ensuring transparency in long-term care.</p>
+            <p class="answer" id="faq-answer-1">Gloria is a family communication platform built specifically for senior living communities. Staff share photos, updates, announcements, newsletters, and events with families in one simple, private app.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-2">
                 <p>Who is Gloria for?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-2">Gloria is built for care facilities and the families of their residents, making communication easier and transparent.</p>
+            <p class="answer" id="faq-answer-2">Senior living communities &mdash; independent living, assisted living, and memory care &mdash; and the families of their residents.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-3">
-                <p>How does the Gloria app work?</p>
+                <p>How does Gloria work?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-3">Gloria lets care staff share photos, wellness updates, announcements, a monthly newsletter, and a shared calendar with families &mdash; keeping everyone connected, informed, and coordinated.</p>
+            <p class="answer" id="faq-answer-3">Staff post from a simple staff app, approved family members follow along in the family app, and admins manage accounts, permissions, and content from the admin portal.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-4">
+                <p>How is Gloria charged?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-4">Monthly, based on the highest number of residents active in Gloria that month.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-5">
+                <p>What if we move to a different pricing tier?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-5">Your rate is automatically adjusted based on the number of residents active in Gloria.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-6">
+                <p>Is there a setup or cancellation fee?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-6">No. Onboarding and account setup are included, and you can cancel at any time. Cancellations take effect at the end of the current billing period.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-7">
+                <p>Is there a limit to the number of staff or family members?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-7">No &mdash; family members are unlimited. You cannot have more staff members than residents active in Gloria.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-8">
+                <p>Is there a difference between the pricing tiers?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-8">No. All pricing tiers include the same features, although we may add optional features in the future.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-9">
+                <p>Is there a minimum resident requirement?</p>
+                <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
+            </div>
+            <p class="answer" id="faq-answer-9">Yes. We require a minimum of 25 residents to be enrolled in Gloria.</p>
+            <hr/>
+            <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-10">
                 <p>What if my question isn't listed here?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-4">For any questions or concerns, email <a class="faq-email" href="mailto:dave@gloriatech.co">dave@gloriatech.co</a> &mdash; we&rsquo;re here to help!</p>
+            <p class="answer" id="faq-answer-10">Email <a class="faq-email" href="mailto:dave@gloriatech.co">dave@gloriatech.co</a> for sales questions or <a class="faq-email" href="mailto:support@gloriatech.co">support@gloriatech.co</a> for help with your account &mdash; we&rsquo;re here to help!</p>
         </div>
     </section>
 
@@ -273,19 +335,26 @@
         <div class="footer-col">
             <p class="footer-title">Explore</p>
             <p class="footer-item"><a href="features">Features</a></p>
+            <p class="footer-item"><a href="pricing">Pricing</a></p>
             <p class="footer-item"><a href="about">About</a></p>
-            <p class="footer-item"><a href="#how">How it works</a></p>
-            <p class="footer-item"><a href="#faq">FAQ</a></p>
+            <p class="footer-item"><a href="./#how">How it works</a></p>
+            <p class="footer-item"><a href="./#why">Why Gloria</a></p>
+            <p class="footer-item"><a href="./#faq">FAQ</a></p>
             <p class="footer-item"><a href="demo">Get a Demo</a></p>
         </div>
         <div class="footer-col">
             <p class="footer-title">Contact</p>
             <span class="footer-item">
                 <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-                <a href="mailto:dave@gloriatech.co">dave@gloriatech.co</a>
+                <a href="mailto:dave@gloriatech.co">Sales: dave@gloriatech.co</a>
+            </span>
+            <span class="footer-item">
+                <i class="fa-solid fa-life-ring" aria-hidden="true"></i>
+                <a href="mailto:support@gloriatech.co">Support: support@gloriatech.co</a>
             </span>
             <p class="footer-item"><a href="policy">Privacy Policy</a></p>
             <p class="footer-item"><a href="terms">Terms of Service</a></p>
+            <p class="footer-credit">Walk photo: <a href="https://commons.wikimedia.org/wiki/File:Couple_walking_(16267925833).jpg" rel="noopener" target="_blank">&ldquo;Couple walking&rdquo;</a> by bluesbby, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener" target="_blank">CC BY 2.0</a>.</p>
         </div>
     </footer>
 

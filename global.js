@@ -161,10 +161,12 @@ const headerEl = document.querySelector('header');
 const marqueeEl = document.querySelector('.marquee');
 
 function sizeHeroFold() {
-  if (!heroSplit || !headerEl || !marqueeEl) return;
+  if (!heroSplit || !headerEl) return;
   if (window.innerWidth >= 1024) {
-    // Fill the first viewport so the care-settings banner sits at its bottom edge
-    heroSplit.style.minHeight = Math.max(480, window.innerHeight - headerEl.offsetHeight - marqueeEl.offsetHeight) + 'px';
+    // Fill the first viewport (the care-settings banner was removed 2026-09-15;
+    // if one is ever added back it sits at the fold's bottom edge again).
+    const bannerH = marqueeEl ? marqueeEl.offsetHeight : 0;
+    heroSplit.style.minHeight = Math.max(480, window.innerHeight - headerEl.offsetHeight - bannerH) + 'px';
   } else {
     heroSplit.style.minHeight = '';
   }
@@ -253,4 +255,48 @@ function getCustomMessage(input) {
   if (input.id === "company-type") return "Please select a company type.";
   if (input.id === "hear-about") return "Please let us know how you heard about us.";
   return "This field is required.";
+}
+
+
+// Pricing calculator (pricing page only)
+
+const priceRange = document.getElementById('resident-range');
+if (priceRange) {
+  // $/resident/month by active-resident band. Keep in sync with the
+  // .tier-list markup on pricing/index.html. Minimum 25 residents.
+  const TIERS = [
+    { min: 25,  max: 50,  rate: 15 },
+    { min: 51,  max: 100, rate: 14 },
+    { min: 101, max: 200, rate: 12 },
+    { min: 201, max: 300, rate: 11 },
+    { min: 301, max: Infinity, rate: 10 },
+  ];
+  const countOut = document.getElementById('resident-count');
+  const rateOut = document.getElementById('price-rate');
+  const totalOut = document.getElementById('price-total');
+  const residentsOut = document.getElementById('price-residents');
+  const tierEls = document.querySelectorAll('.tier');
+  const fmt = new Intl.NumberFormat('en-US');
+  const tierFor = (n) => TIERS.find((t) => n >= t.min && n <= t.max) || TIERS[TIERS.length - 1];
+
+  function render() {
+    const n = Math.max(Number(priceRange.min), Number(priceRange.value));
+    const tier = tierFor(n);
+    const pct = ((n - priceRange.min) / (priceRange.max - priceRange.min)) * 100;
+    priceRange.style.setProperty('--fill', pct + '%');
+    priceRange.setAttribute('aria-valuenow', String(n));
+    priceRange.setAttribute('aria-valuetext', n + ' residents, $' + tier.rate + ' per resident per month');
+    if (countOut) countOut.textContent = n >= Number(priceRange.max) ? priceRange.max + '+' : fmt.format(n);
+    if (rateOut) rateOut.textContent = String(tier.rate);
+    if (totalOut) totalOut.textContent = fmt.format(n * tier.rate);
+    if (residentsOut) residentsOut.textContent = fmt.format(n);
+    tierEls.forEach((el) => {
+      const active = n >= Number(el.dataset.min) && n <= Number(el.dataset.max);
+      el.classList.toggle('is-active', active);
+      if (active) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current');
+    });
+  }
+
+  priceRange.addEventListener('input', render);
+  render();
 }
