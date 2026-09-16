@@ -2441,3 +2441,30 @@ html.js .reveal.is-visible {
 /* About: story without the photo (Richard, 2026-09-15) — single centred column. */
 .story-solo { grid-template-columns: 1fr !important; }
 .story-solo .story-copy { max-width: 46rem; margin: 0 auto; }
+
+
+/* ── Logo lockup (Dave, 2026-09-16): optical alignment of mark + wordmark ──
+   One flex row, mark ~12% larger, nudged down a hair to sit on the
+   wordmark's visual baseline, tighter gap, slightly tightened letterfit. */
+.logo > span,
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.logo > span .logo-img,
+.footer-logo .logo-img {
+    display: block;
+    transform: translateY(-3px);   /* tree base sits on the wordmark baseline */
+}
+.logo > span .logo-img { width: 34px; }
+.footer-logo .logo-img { width: 31px; }
+.logo-text {
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -0.012em;
+    font-weight: 550;
+}
+@media (min-width: 1024px) {
+    .logo > span .logo-img { width: 36px; }
+}
