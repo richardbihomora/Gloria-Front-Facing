@@ -87,7 +87,6 @@ function buildContactModal() {
           <img src="images/logo.png" alt="" aria-hidden="true">
           <span class="card-wordmark">Gloria</span>
         </div>
-        <p class="card-tagline">Care that keeps families close</p>
       </div>
       <div class="card-bottom">
         <p class="card-name">Dave Vacchio</p>
@@ -266,10 +265,11 @@ if (priceRange) {
   // .tier-list markup on pricing/index.html. Minimum 25 residents.
   const TIERS = [
     { min: 25,  max: 50,  rate: 15 },
-    { min: 51,  max: 100, rate: 14 },
-    { min: 101, max: 200, rate: 12 },
-    { min: 201, max: 300, rate: 11 },
-    { min: 301, max: Infinity, rate: 10 },
+    { min: 51,  max: 75,  rate: 14 },
+    { min: 76,  max: 100, rate: 13 },
+    { min: 101, max: 125, rate: 12 },
+    { min: 126, max: 150, rate: 11 },
+    { min: 151, max: Infinity, rate: 10 },
   ];
   const countOut = document.getElementById('resident-count');
   const rateOut = document.getElementById('price-rate');
@@ -296,6 +296,12 @@ if (priceRange) {
       if (active) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current');
     });
   }
+
+  document.querySelectorAll('.pricing-scale span[data-value]').forEach((el) => {
+    const v = Number(el.dataset.value);
+    const pct = ((v - priceRange.min) / (priceRange.max - priceRange.min)) * 100;
+    el.style.left = pct + '%';
+  });
 
   priceRange.addEventListener('input', render);
   render();

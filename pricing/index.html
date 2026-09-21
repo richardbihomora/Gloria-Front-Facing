@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Simple per-resident pricing for senior living communities. Every tier includes every feature; no setup or cancellation fees; minimum of 25 residents." />
-    <title>Gloria — Pricing</title>
+    <title>Gloria</title>
     <meta name="theme-color" content="#FDFAF7">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
@@ -63,8 +63,8 @@
     <main>
     <!-- Statement Hero -->
     <section class="about-hero">
-        <h1>Simple pricing, <em>per resident</em></h1>
-        <p class="about-hero-sub">One monthly rate per active resident. Every tier includes every feature. No setup fees, no cancellation fees, unlimited family members.</p>
+        <h1>Pricing that <em>scales</em> with your community</h1>
+        <p class="about-hero-sub">One monthly rate based on active residents. Every tier includes every feature, with no setup fees, no cancellation fees, and unlimited family members.</p>
     </section>
 
     <!-- Calculator -->
@@ -73,16 +73,16 @@
             <div class="pricing-controls">
                 <label class="pricing-label" for="resident-range" id="pricing-title">How many residents are in your community?</label>
                 <p class="pricing-count"><output id="resident-count" for="resident-range">50</output> <span>residents</span></p>
-                <input type="range" id="resident-range" class="pricing-range" min="25" max="500" step="1" value="50" aria-valuemin="25" aria-valuemax="500" aria-describedby="pricing-min-note">
-                <div class="pricing-scale" aria-hidden="true"><span>25</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500+</span></div>
-                <p class="pricing-min-note" id="pricing-min-note">Minimum of 25 residents. Communities over 500 residents: <a href="mailto:dave@gloriatech.co">talk to us</a>.</p>
+                <input type="range" id="resident-range" class="pricing-range" min="25" max="200" step="1" value="50" aria-valuemin="25" aria-valuemax="200" aria-describedby="pricing-min-note">
+                <div class="pricing-scale" aria-hidden="true"><span data-value="25">25</span><span data-value="50">50</span><span data-value="75">75</span><span data-value="100">100</span><span data-value="125">125</span><span data-value="150">150</span><span data-value="200">200+</span></div>
+                <p class="pricing-min-note" id="pricing-min-note">Minimum of 25 residents. Communities over 200 residents: <a href="mailto:dave@gloriatech.co">talk to us</a>.</p>
             </div>
             <div class="pricing-result" aria-live="polite">
                 <p class="price-figure"><span class="price-currency">$</span><span id="price-rate">15</span><span class="price-unit">/resident/month</span></p>
                 <p class="price-total">About <strong>$<span id="price-total">750</span></strong> per month for <span id="price-residents">50</span> residents</p>
                 <a class="cta-button" href="demo">Get a Demo</a>
                 <ul class="cta-points pricing-points">
-                    <li><i class="fa-solid fa-check" aria-hidden="true"></i>Every feature, on every tier</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i>Every feature on every tier</li>
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i>Unlimited family members</li>
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i>Onboarding and setup included</li>
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i>Cancel any time</li>
@@ -92,33 +92,33 @@
 
         <ol class="tier-list" aria-label="Pricing tiers">
             <li class="tier" data-min="25" data-max="50"><span class="tier-range">25&ndash;50 residents</span><span class="tier-rate">$15<small>/resident/mo</small></span></li>
-            <li class="tier" data-min="51" data-max="100"><span class="tier-range">51&ndash;100 residents</span><span class="tier-rate">$14<small>/resident/mo</small></span></li>
-            <li class="tier" data-min="101" data-max="200"><span class="tier-range">101&ndash;200 residents</span><span class="tier-rate">$12<small>/resident/mo</small></span></li>
-            <li class="tier" data-min="201" data-max="300"><span class="tier-range">201&ndash;300 residents</span><span class="tier-rate">$11<small>/resident/mo</small></span></li>
-            <li class="tier" data-min="301" data-max="999999"><span class="tier-range">301+ residents</span><span class="tier-rate">$10<small>/resident/mo</small></span></li>
+            <li class="tier" data-min="51" data-max="75"><span class="tier-range">51&ndash;75 residents</span><span class="tier-rate">$14<small>/resident/mo</small></span></li>
+            <li class="tier" data-min="76" data-max="100"><span class="tier-range">76&ndash;100 residents</span><span class="tier-rate">$13<small>/resident/mo</small></span></li>
+            <li class="tier" data-min="101" data-max="125"><span class="tier-range">101&ndash;125 residents</span><span class="tier-rate">$12<small>/resident/mo</small></span></li>
+            <li class="tier" data-min="126" data-max="150"><span class="tier-range">126&ndash;150 residents</span><span class="tier-rate">$11<small>/resident/mo</small></span></li>
+            <li class="tier" data-min="151" data-max="999999"><span class="tier-range">151+ residents</span><span class="tier-rate">$10<small>/resident/mo</small></span></li>
         </ol>
-        <p class="pricing-footnote">Billed monthly on the highest number of residents active in Gloria that month. Your rate adjusts automatically as your community grows.</p>
+        <p class="pricing-footnote">Billed monthly based on the highest number of active residents in Gloria that month. Your rate adjusts automatically as your community grows. Annual billing is also available. <a href="mailto:dave@gloriatech.co">Contact us</a> for details.</p>
     </section>
 
     <!-- Pricing FAQ -->
     <section class="faq-section" id="pricing-faq">
         <div class="faq-intro">
             <h2 class="faq-header">Pricing questions</h2>
-            <p class="faq-blurb">The straight answers. Anything else, we're one email away.</p>
-            <a class="faq-contact" href="mailto:dave@gloriatech.co">dave@gloriatech.co <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p class="faq-blurb">Everything you need to know about Gloria&rsquo;s pricing. Have a question we haven&rsquo;t answered? Reach out to us at <a class="faq-email" href="mailto:dave@gloriatech.co">dave@gloriatech.co</a>.</p>
         </div>
         <div class="faq-list">
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-1">
-                <p>How is it charged?</p>
+                <p>How is Gloria charged?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-1">Monthly, based on the highest number of residents active in Gloria that month.</p>
+            <p class="answer" id="faq-answer-1">Gloria is billed monthly based on the highest number of active residents during that month.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-2">
                 <p>What if we move to a different pricing tier?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-2">Your rate is automatically adjusted based on the number of residents active in Gloria.</p>
+            <p class="answer" id="faq-answer-2">Your monthly rate automatically adjusts based on the number of active residents in Gloria.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-3">
                 <p>Is there a setup or cancellation fee?</p>
@@ -130,37 +130,22 @@
                 <p>Is there a limit to the number of staff or family members?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-4">No. Family members are unlimited. You cannot have more staff members than residents active in Gloria.</p>
+            <p class="answer" id="faq-answer-4">Family members are unlimited. The number of staff accounts cannot exceed the number of residents active in Gloria.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-5">
-                <p>Is there a difference between the price levels?</p>
+                <p>Is there a difference between the pricing tiers?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-5">No. All pricing tiers include the same features, although we may add optional features in the future.</p>
+            <p class="answer" id="faq-answer-5">No. All pricing tiers include the same features. We may introduce optional features in the future.</p>
             <hr/>
             <div class="question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-answer-6">
                 <p>Is there a minimum resident requirement?</p>
                 <p class="faq-toggle"><i class="fa-solid fa-plus" aria-hidden="true"></i></p>
             </div>
-            <p class="answer" id="faq-answer-6">Yes. We require a minimum of 25 residents to be enrolled in Gloria.</p>
+            <p class="answer" id="faq-answer-6">Yes. A minimum of 25 residents must be enrolled in Gloria.</p>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-band">
-        <div class="cta-copy">
-            <h2 class="cta-title">See what your community <em>would pay</em></h2>
-            <p class="cta-text">We'll walk you through Gloria and confirm your rate based on your resident count.</p>
-        </div>
-        <div class="cta-panel">
-            <ul class="cta-points">
-                <li><i class="fa-solid fa-check" aria-hidden="true"></i>A quick, personal walkthrough</li>
-                <li><i class="fa-solid fa-check" aria-hidden="true"></i>Tailored to your community</li>
-                <li><i class="fa-solid fa-check" aria-hidden="true"></i>Questions answered by our team</li>
-            </ul>
-            <a class="cta-button" href="demo">Get a Demo</a>
-        </div>
-    </section>
     </main>
     <!-- Footer -->
     <footer id="contact">
@@ -169,7 +154,6 @@
                 <img class="logo-img" alt="" aria-hidden="true" src="images/logo.png?v=15">
                 <p class="logo-text">Gloria</p>
             </span>
-            <p class="footer-tagline">Connecting caregivers and families for better care.</p>
             <a class="appstore-badge" href="#" aria-label="Download Gloria on the App Store">
                 <i class="fa-brands fa-apple" aria-hidden="true"></i>
                 <span class="badge-text"><small>Download today on the</small><strong>App Store</strong></span>
