@@ -75,29 +75,46 @@ questions.forEach((question) => {
 // Contact modal — nav "Contact" opens a business-card style dialog with a
 // copy-to-clipboard email. The mailto href stays as the no-JS fallback.
 const CONTACT_EMAIL = 'dave@gloriatech.co';
+const SUPPORT_EMAIL = 'support@gloriatech.co';
 
 function buildContactModal() {
   const overlay = document.createElement('div');
   overlay.className = 'contact-overlay';
   overlay.innerHTML = `
     <div class="contact-card" role="dialog" aria-modal="true" aria-label="Contact Gloria">
-      <button class="contact-close" aria-label="Close contact card"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-      <div class="card-top">
-        <div class="card-brand">
-          <img src="images/logo.png" alt="" aria-hidden="true">
-          <span class="card-wordmark">Gloria</span>
-        </div>
+      <div class="card-side" aria-hidden="true">
+        <img src="images/logo.png" alt="">
+        <span class="card-wordmark">Gloria</span>
       </div>
-      <div class="card-bottom">
-        <p class="card-name">Dave Vacchio</p>
-        <p class="card-role">Head of Sales</p>
-        <div class="card-email-row">
-          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-          <span class="card-email">${CONTACT_EMAIL}</span>
-          <button class="copy-email" aria-label="Copy email address">
-            <i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>
-          </button>
+      <div class="card-main">
+        <button class="contact-close" aria-label="Close contact card"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <div>
+          <p class="card-name">Dave Vacchio</p>
+          <p class="card-role">Head of Sales</p>
         </div>
+        <div class="card-rows">
+          <div class="card-email-row">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            <span class="card-email-text">
+              <span class="card-email-label">Sales</span>
+              <span class="card-email">${CONTACT_EMAIL}</span>
+            </span>
+            <button class="copy-email" data-email="${CONTACT_EMAIL}" aria-label="Copy sales email address">
+              <i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>
+            </button>
+          </div>
+          <div class="card-email-row">
+            <i class="fa-solid fa-life-ring" aria-hidden="true"></i>
+            <span class="card-email-text">
+              <span class="card-email-label">Support</span>
+              <span class="card-email">${SUPPORT_EMAIL}</span>
+            </span>
+            <button class="copy-email" data-email="${SUPPORT_EMAIL}" aria-label="Copy support email address">
+              <i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>
+            </button>
+          </div>
+        </div>
+        <a class="card-demo" href="demo">Get a Demo</a>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -116,19 +133,21 @@ function buildContactModal() {
     if (e.key === 'Escape' && overlay.classList.contains('open')) close();
   });
 
-  const copyBtn = overlay.querySelector('.copy-email');
-  copyBtn.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL);
-      copyBtn.classList.add('copied');
-      copyBtn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i><span>Copied!</span>';
-      setTimeout(() => {
-        copyBtn.classList.remove('copied');
-        copyBtn.innerHTML = '<i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>';
-      }, 2000);
-    } catch (err) {
-      window.location.href = 'mailto:' + CONTACT_EMAIL;
-    }
+  overlay.querySelectorAll('.copy-email').forEach((copyBtn) => {
+    const email = copyBtn.dataset.email || CONTACT_EMAIL;
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(email);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i><span>Copied!</span>';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>';
+        }, 2000);
+      } catch (err) {
+        window.location.href = 'mailto:' + email;
+      }
+    });
   });
 
   return {

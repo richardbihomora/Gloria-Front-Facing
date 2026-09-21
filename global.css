@@ -1858,60 +1858,71 @@ select.error { background-color: #FFF1EA; }
 }
 
 .contact-card {
+    /* Two-panel business card (Richard, 2026-09-21): brand panel left,
+       details right. Sized to content, no fixed aspect ratio, no watermark. */
     position: relative;
-    width: min(100%, 30rem);
-    /* Was aspect-ratio 7/4; without the tagline (Dave, 2026-09-21) that left
-       a large empty band, so the card now sizes to its content. */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.6rem;
+    width: min(100%, 36rem);
+    display: grid;
+    grid-template-columns: 10rem 1fr;
     overflow: hidden;
-    border: 2px solid transparent;
-    background:
-        radial-gradient(ellipse 90% 70% at 85% -10%, rgba(248, 96, 0, 0.16), transparent 60%) padding-box,
-        linear-gradient(#1F1B18, #1F1B18) padding-box,
-        linear-gradient(135deg, #FF9A33 0%, rgba(248, 72, 0, 0.65) 30%, rgba(253, 250, 247, 0.22) 65%, #F87200 100%) border-box;
     border-radius: 1.1rem;
-    padding: 1.9rem 2.1rem;
+    background: #1F1B18;
+    border: 1px solid rgba(255, 154, 51, 0.35);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
         0 40px 80px rgba(20, 16, 12, 0.55),
-        0 0 70px rgba(248, 96, 0, 0.30);
-    transform: translateY(14px) scale(0.97) rotate(-0.5deg);
+        0 0 70px rgba(248, 96, 0, 0.22);
+    transform: translateY(14px) scale(0.97);
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Faint brand-mark watermark, like a printed card */
-.contact-card::after {
-    content: "";
-    position: absolute;
-    right: -34px;
-    bottom: -44px;
-    width: 190px;
-    height: 190px;
-    background: url('images/logo.png') no-repeat center / contain;
-    opacity: 0.09;
-    pointer-events: none;
 }
 
 .contact-overlay.open .contact-card {
     transform: none;
 }
 
+.card-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 2rem 1.25rem;
+    background: var(--brand-gradient-strong, linear-gradient(160deg, #FF8A00, #F84800));
+    color: #FFFFFF;
+}
+
+.card-side img { width: 64px; height: 64px; filter: brightness(0) invert(1); }
+
+.card-wordmark {
+    font-family: var(--font-secondary);
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1;
+}
+
+.card-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 2rem 2rem 1.8rem 1.9rem;
+    min-width: 0;
+}
+
 .contact-close {
     position: absolute;
-    top: 1.1rem;
-    right: 1.1rem;
-    width: 2.4rem;
-    height: 2.4rem;
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 2.2rem;
+    height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     background: rgba(253, 250, 247, 0.08);
     color: #C9BFB6;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -1920,74 +1931,67 @@ select.error { background-color: #FFF1EA; }
     color: #FFF6ED;
 }
 
-.card-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.card-brand img { width: 30px; }
-
-.card-wordmark {
-    font-family: var(--font-secondary);
-    font-size: 1.7rem;
-    font-weight: 500;
-    color: var(--brand-amber);
-}
-
-.card-tagline {
-    color: #A89C90;
-    font-weight: 300;
-    font-size: 0.88rem;
-    margin-top: 0.3rem;
-}
-
 .card-name {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     font-weight: 600;
     color: #FBF4EC;
+    line-height: 1.15;
+    padding-right: 2.5rem;
 }
 
 .card-role {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--brand-amber);
-    margin: 0.25rem 0 1rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #C9BFB6;
+    margin-top: 0.15rem;
 }
+
+.card-rows { display: flex; flex-direction: column; gap: 0.75rem; }
 
 .card-email-row {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.7rem;
+    min-width: 0;
 }
 
 .card-email-row > i {
     color: var(--brand-amber);
     font-size: 0.9rem;
+    width: 1rem;
+    text-align: center;
+}
+
+.card-email-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; line-height: 1.2; }
+
+.card-email-label {
+    color: #A89C90;
+    font-size: 0.72rem;
+    display: block;
+    margin-bottom: 0.1rem;
 }
 
 .card-email {
     color: #FBF4EC;
     font-size: 0.95rem;
     font-weight: 500;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
+    display: block;
 }
 
 .copy-email {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
+    margin-left: auto;
     background: rgba(253, 250, 247, 0.10);
     color: #FBF4EC;
     font-family: var(--font-primary);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 600;
     border-radius: 0.55rem;
-    padding: 0.4rem 0.7rem;
-    margin-left: 0.4rem;
+    padding: 0.35rem 0.6rem;
     white-space: nowrap;
     transition: background-color 0.2s ease;
 }
@@ -1999,11 +2003,26 @@ select.error { background-color: #FFF1EA; }
     color: var(--brand-amber);
 }
 
+.card-demo {
+    align-self: flex-start;
+    margin-top: 0.2rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    background: var(--brand-gradient-strong, linear-gradient(160deg, #FF8A00, #F84800));
+    color: #FFFFFF;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
 @media (max-width: 519px) {
-    .contact-card {
-        aspect-ratio: auto;
-        gap: 2.5rem;
-    }
+    .contact-card { grid-template-columns: 1fr; }
+    .card-side { flex-direction: row; padding: 1.1rem 1.25rem; }
+    .card-side img { width: 36px; height: 36px; }
+    .card-wordmark { font-size: 1.4rem; }
+    .card-main { padding: 1.5rem 1.25rem 1.4rem; }
+    .contact-close { top: 0.7rem; right: 0.7rem; background: rgba(0, 0, 0, 0.25); color: #FFFFFF; }
+    .card-email { white-space: normal; overflow-wrap: anywhere; }
 }
 
 @media (prefers-reduced-motion: reduce) {
