@@ -157,6 +157,10 @@ textarea:focus-visible {
 
 /*********************************** HEADER *********************************/
 
+/* Anchor jumps (How it works, Why Gloria, FAQ) land under the sticky header
+   without it: leave room for the bar so the section heading stays visible. */
+section[id] { scroll-margin-top: 112px; }
+
 header {
     display: flex;
     justify-content: space-between;
@@ -1856,10 +1860,12 @@ select.error { background-color: #FFF1EA; }
 .contact-card {
     position: relative;
     width: min(100%, 30rem);
-    aspect-ratio: 7 / 4;
+    /* Was aspect-ratio 7/4; without the tagline (Dave, 2026-09-21) that left
+       a large empty band, so the card now sizes to its content. */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1.6rem;
     overflow: hidden;
     border: 2px solid transparent;
     background:
