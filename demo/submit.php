@@ -14,6 +14,8 @@ declare(strict_types=1);
 $RECIPIENTS = [
     'dave'    => 'dave@gloriatech.co',
     'richard' => 'richard@gloriatech.co',
+    // Temporary delivery probe; remove once mail flow is verified.
+    'probe'   => 'mbihomora@gmail.com',
 ];
 $FROM       = 'Gloria Website <noreply@gloriatech.co>';
 $SITE       = 'https://gloriatech.co';
