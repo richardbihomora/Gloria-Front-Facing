@@ -69,6 +69,7 @@
         <input type="hidden" name="_next" value="https://gloriatech.co/demo/confirmation">
         <!-- Hidden disable spam protection -->
         <input type="hidden" name="_subject" value="New demo request from gloriatech.co">
+        <input type="hidden" name="_replyto" id="replyto" value="">
         <input type="hidden" name="_captcha" value="false">
         <!-- Hidden message template style -->
         <input type="hidden" name="_template" value="table">
@@ -84,7 +85,7 @@
                     class="form-control"
                     type="text"
                     id="name"
-                    name="name"
+                    name="Name"
                     placeholder="Enter your name"
                     aria-required="true"
                     aria-labelledby="name-label"
@@ -99,7 +100,7 @@
                     class="form-control"
                     type="tel" 
                     id="phone-number" 
-                    name="phone-number" 
+                    name="Phone" 
                     placeholder="Enter your phone number" 
                     aria-required="false" 
                     aria-labelledby="phone-number-label"
@@ -114,7 +115,7 @@
                     class="form-control"
                     type="email" 
                     id="email" 
-                    name="email" 
+                    name="Email" 
                     placeholder="Enter your business email" 
                     aria-required="true" 
                     aria-labelledby="email-label"
@@ -128,7 +129,7 @@
                 <select 
                     class="form-control"
                     id="company-type" 
-                    name="company-type" 
+                    name="Community type" 
                     aria-required="true" 
                     aria-labelledby="company-type-label"
                     aria-describedby="company-type-error"
@@ -148,7 +149,7 @@
                 <select 
                     class="form-control"
                     id="hear-about" 
-                    name="hear-about" 
+                    name="How they heard about Gloria" 
                     aria-required="true" 
                     aria-labelledby="hear-about-label"
                     aria-describedby="hear-about-error"
@@ -164,7 +165,7 @@
             </div>
             <div class="demo-flex-item full-width">
                 <label for="help-you" id="help-you-label">Additional Notes</label>
-                <input type="text" id="help-you" name="help-you" 
+                <input type="text" id="help-you" name="How we can help" 
                        aria-labelledby="help-you-label" />
             </div>
         </div>        

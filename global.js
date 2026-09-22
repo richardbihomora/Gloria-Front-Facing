@@ -266,6 +266,17 @@ function isClickOutsideMenu(event) {
 
 // Get custom error message
 
+// Demo form: FormSubmit labels the email with each field's name, so the names
+// are human phrases; the reply-to is copied from the email field on submit.
+const demoForm = document.querySelector('form.demo');
+if (demoForm) {
+  demoForm.addEventListener('submit', () => {
+    const email = demoForm.querySelector('#email');
+    const replyTo = demoForm.querySelector('#replyto');
+    if (email && replyTo) replyTo.value = email.value.trim();
+  }, true);
+}
+
 function getCustomMessage(input) {
   if (input.id === "name") return "Please enter your name.";
   if (input.id === "phone-number") return "Please enter a valid phone number.";
