@@ -63,18 +63,10 @@
 
     <main>
     <!-- Form Section -->
-    <form class="demo" action="https://formsubmit.co/dave@gloriatech.co" method="POST" >
-
-        <!-- Hidden redirect input -->
-        <input type="hidden" name="_next" value="https://gloriatech.co/demo/confirmation">
-        <!-- Hidden disable spam protection -->
-        <input type="hidden" name="_subject" value="New demo request from gloriatech.co">
-        <input type="hidden" name="_replyto" id="replyto" value="">
-        <input type="hidden" name="_captcha" value="false">
-        <!-- Hidden message template style -->
-        <input type="hidden" name="_template" value="table">
+    <form class="demo" action="/demo/submit.php" method="POST">
+        <!-- Handled by demo/submit.php on the site's own host: branded email to sales, then the confirmation page. -->
         <!-- Honeypot field (for bots only) -->
-        <input type="text" name="_honey" style="display:none">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
         <h1>See Gloria in Action</h1>
         <p class="demo-subtitle">We'd love to offer your clients peace of mind</p>
