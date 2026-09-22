@@ -90,7 +90,7 @@ jobs:
             set sftp:connect-program 'ssh -a -x -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes';
             set net:max-retries 2;
             set net:timeout 30;
-            mirror -R --verbose --no-perms --ignore-time --only-missing-or-different $DRY dist/ $WEB_ROOT/;
+            mirror -R --verbose --no-perms $DRY dist/ $WEB_ROOT/;
             quit
           " "sftp://$USER@$HOST"
           echo "Deployed dist to $USER@$HOST:$WEB_ROOT${DRY:+ (dry run)}"
