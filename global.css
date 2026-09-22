@@ -2575,9 +2575,11 @@ html.js .reveal.is-visible {
         grid-template-columns: 5fr 7fr;
         gap: 2.5rem;
         align-items: start;
-        max-width: 76rem;
-        margin: 0 auto;
-        padding: 3.5rem 2rem 5rem;
+        /* Full-bleed section so the glow fades out instead of being clipped;
+           the grid stays centred at 76rem via the side padding. */
+        max-width: none;
+        margin: 0;
+        padding: 3.5rem max(2rem, calc((100% - 76rem) / 2)) 5rem;
         background: transparent;
     }
     .demo-side { margin: 0.5rem 0 0; max-width: none; }
