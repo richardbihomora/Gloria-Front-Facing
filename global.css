@@ -392,6 +392,11 @@ footer a, footer p, footer i { color: #EAE4DE; }
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
+/* App Store badge is disabled until the app is live (Richard, 2026-09-21):
+   not a link, no hover, muted. Re-enable by turning the span back into an <a>
+   with the App Store URL and dropping is-disabled. */
+.appstore-badge.is-disabled { pointer-events: none; cursor: default; opacity: 0.55; }
+
 .appstore-badge:hover {
     background: rgba(253, 250, 247, 0.10);
     border-color: rgba(253, 250, 247, 0.45);
