@@ -1,19 +1,21 @@
 <?php
 // Demo request handler for gloriatech.co/demo/.
 //
-// Receives the demo form, sends a branded HTML email (plain-text alternative
-// included) to the sales inbox with the prospect as Reply-To, then redirects
-// to the confirmation page. Runs on the site's PHP host; no third-party form
-// service, no ads in the email.
+// Receives the demo form, emails the sales inbox with the prospect as Reply-To,
+// then redirects to the confirmation page. Runs on the site's own host; no
+// third-party form service and no ads in the email.
+//
+// Delivery note: gloriatech.co receives mail at Google Workspace. cPanel had
+// the domain set to "Local Mail Exchanger", so anything the server sent to an
+// @gloriatech.co address was delivered into this server and dropped. It is now
+// "Remote Mail Exchanger" and mail arrives. If deliverability ever needs to be
+// stronger, drop a demo/config.php next to this file with SMTP credentials for
+// a sender the domain already authorizes (Google Workspace or SendGrid) and it
+// is used automatically. That file holds a password, so it lives only on the
+// server and is git-ignored.
 //
 // Recipients are a fixed allowlist. `?to=richard` sends a copy to Richard for
 // previewing the layout; anything else goes to Dave.
-//
-// Sending: if demo/config.php exists it is used for authenticated SMTP through
-// a real Gloria mailbox (PHPMailer). That file holds the password, lives only
-// on the server and is git-ignored. Without it the script falls back to the
-// host's mail(), which this domain's sender policy does not authorize, so the
-// config file is the supported path.
 
 declare(strict_types=1);
 
@@ -21,10 +23,11 @@ $RECIPIENTS = [
     'dave'    => 'dave@gloriatech.co',
     'richard' => 'richard@gloriatech.co',
 ];
-$FROM       = 'Gloria Website <noreply@gloriatech.co>';
-$SITE       = 'https://gloriatech.co';
-$CONFIRM    = $SITE . '/demo/confirmation/';
-$FORM_PAGE  = $SITE . '/demo/';
+$FROM_ADDR = 'noreply@gloriatech.co';
+$FROM_NAME = 'Gloria Website';
+$SITE      = 'https://gloriatech.co';
+$CONFIRM   = $SITE . '/demo/confirmation/';
+$FORM_PAGE = $SITE . '/demo/';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . $FORM_PAGE, true, 303);
@@ -38,8 +41,11 @@ if (!empty($_POST['_honey'])) {
 }
 
 $field = static function (string $key, int $max = 500): string {
-    $v = isset($_POST[$key]) ? (string) $_POST[$key] : '';
-    $v = trim(preg_replace('/[\r\n\t]+/', ' ', $v) ?? '');
+    // PHP rewrites spaces in POST field names to underscores, so accept both.
+    $alt = str_replace(' ', '_', $key);
+    $raw = $_POST[$key] ?? $_POST[$alt] ?? '';
+    $v   = is_string($raw) ? $raw : '';
+    $v   = trim((string) preg_replace('/[\r\n\t]+/', ' ', $v));
     return mb_substr($v, 0, $max);
 };
 
@@ -55,119 +61,78 @@ if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$toKey = isset($_GET['to']) && isset($RECIPIENTS[$_GET['to']]) ? $_GET['to'] : 'dave';
+$toKey = (isset($_GET['to']) && isset($RECIPIENTS[$_GET['to']])) ? $_GET['to'] : 'dave';
 $to    = $RECIPIENTS[$toKey];
 
 $submitted = gmdate('D, M j, Y \a\t g:i A') . ' (UTC)';
-$e = static fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$e = static function (string $s): string {
+    return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+};
 
+$missing = '<span style="color:#A3A8AF;">Not provided</span>';
 $rows = [
     ['Name',                        $e($name)],
-    ['Email',                       '<a href="mailto:' . $e($email) . '" style="color:#E4520B;text-decoration:underline;">' . $e($email) . '</a>'],
-    ['Phone',                       $phone !== '' ? $e($phone) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['Community type',              $community !== '' ? $e($community) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['How they heard about Gloria', $heard !== '' ? $e($heard) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['How we can help',             $help !== '' ? nl2br($e($help)) : '<span style="color:#9AA0A6;">Not provided</span>'],
+    ['Email',                       '<a href="mailto:' . $e($email) . '" style="color:#E4520B;">' . $e($email) . '</a>'],
+    ['Phone',                       $phone !== '' ? $e($phone) : $missing],
+    ['Community type',              $community !== '' ? $e($community) : $missing],
+    ['How they heard about Gloria', $heard !== '' ? $e($heard) : $missing],
+    ['How we can help',             $help !== '' ? nl2br($e($help)) : $missing],
 ];
 
 $rowsHtml = '';
 $last = count($rows) - 1;
-foreach ($rows as $i => [$label, $value]) {
-    $border = $i === $last ? '' : 'border-bottom:1px solid #F1E9E2;';
-    $rowsHtml .= '
-      <tr>
-        <td style="padding:16px 18px;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#6B6F76;width:42%;vertical-align:top;">' . $e($label) . '</td>
-        <td style="padding:16px 18px;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:16px;color:#1A2B47;vertical-align:top;line-height:1.5;">' . $value . '</td>
-      </tr>';
+foreach ($rows as $i => $row) {
+    $border = ($i === $last) ? '' : 'border-bottom:1px solid #EDEFF2;';
+    $rowsHtml .= '<tr>'
+        . '<td style="padding:14px 0;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#6B7280;width:44%;vertical-align:top;">' . $e($row[0]) . '</td>'
+        . '<td style="padding:14px 0;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#1A2B47;vertical-align:top;line-height:1.5;">' . $row[1] . '</td>'
+        . '</tr>';
 }
 
-$html = '<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<title>New demo request</title>
-</head>
-<body style="margin:0;padding:0;background:#FDF3EA;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FDF3EA;">
-  <tr>
-    <td align="center" style="padding:28px 12px;">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+$html = '<!DOCTYPE html>'
+    . '<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>New demo request</title></head>'
+    . '<body style="margin:0;padding:0;background:#FFFFFF;">'
+    . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FFFFFF;">'
+    . '<tr><td align="center" style="padding:32px 16px;">'
+    . '<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">'
 
-        <tr>
-          <td style="padding:0 0 18px 0;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="vertical-align:middle;padding:0 0 0 6px;">
-                  <table role="presentation" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="vertical-align:middle;padding-right:8px;"><img src="' . $SITE . '/images/logo.png" width="34" height="34" alt="" style="display:block;border:0;"></td>
-                      <td style="vertical-align:middle;font-family:Helvetica,Arial,sans-serif;font-size:30px;font-weight:700;color:#F4600B;letter-spacing:-0.5px;">Gloria</td>
-                    </tr>
-                  </table>
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8A6B58;padding:6px 0 0 2px;">PEOPLE &nbsp;&middot;&nbsp; CONNECTION &nbsp;&middot;&nbsp; CARE</div>
-                </td>
-                <td width="230" style="vertical-align:middle;">
-                  <img src="' . $SITE . '/images/closing-image.jpg" width="230" alt="" style="display:block;border:0;width:230px;height:130px;object-fit:cover;border-radius:18px;">
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+    . '<tr><td style="padding:0 0 26px 0;">'
+    . '<table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    . '<td style="vertical-align:middle;padding-right:9px;"><img src="' . $SITE . '/images/logo.png" width="30" height="30" alt="Gloria" style="display:block;border:0;"></td>'
+    . '<td style="vertical-align:middle;font-family:Helvetica,Arial,sans-serif;font-size:25px;font-weight:700;color:#F4600B;letter-spacing:-0.4px;">Gloria</td>'
+    . '</tr></table></td></tr>'
 
-        <tr>
-          <td style="background:#FFFFFF;border-radius:22px;padding:28px 26px 22px 26px;box-shadow:0 12px 30px rgba(90,50,20,0.08);">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td width="64" style="vertical-align:top;">
-                  <div style="width:56px;height:56px;border-radius:28px;background:#FFE7D6;text-align:center;line-height:56px;font-family:Helvetica,Arial,sans-serif;font-size:26px;color:#F4600B;">&#9993;</div>
-                </td>
-                <td style="vertical-align:top;padding-left:14px;">
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:28px;font-weight:700;color:#1A2B47;line-height:1.2;">New demo request</div>
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#4B5058;padding-top:6px;line-height:1.5;">Someone just submitted the demo form on <a href="' . $FORM_PAGE . '" style="color:#E4520B;">gloriatech.co/demo</a>.</div>
-                </td>
-              </tr>
-            </table>
+    . '<tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:700;color:#1A2B47;line-height:1.25;padding-bottom:6px;">New demo request</td></tr>'
+    . '<tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#5A6068;line-height:1.55;padding-bottom:22px;">Someone just submitted the demo form on <a href="' . $FORM_PAGE . '" style="color:#E4520B;">gloriatech.co/demo</a>.</td></tr>'
 
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border:1px solid #F1E9E2;border-radius:16px;border-collapse:separate;overflow:hidden;">' . $rowsHtml . '
-            </table>
+    . '<tr><td style="border-top:2px solid #F4600B;font-size:0;line-height:0;">&nbsp;</td></tr>'
+    . '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rowsHtml . '</table></td></tr>'
 
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;background:#FFF1E6;border-radius:14px;">
-              <tr>
-                <td style="padding:16px 18px;font-family:Helvetica,Arial,sans-serif;">
-                  <div style="font-size:15px;font-weight:700;color:#1A2B47;">Submitted on</div>
-                  <div style="font-size:14px;color:#6B6F76;padding-top:3px;">' . $e($submitted) . '</div>
-                </td>
-              </tr>
-            </table>
+    . '<tr><td style="padding-top:20px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B7280;line-height:1.6;">'
+    . 'Submitted ' . $e($submitted) . '<br>Reply to this email to answer ' . $e($name) . ' directly.'
+    . '</td></tr>'
 
-            <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B6F76;padding-top:18px;line-height:1.5;">Reply to this email to answer ' . $e($name) . ' directly.</div>
-          </td>
-        </tr>
+    . '<tr><td style="padding-top:28px;border-top:1px solid #EDEFF2;font-size:0;line-height:0;">&nbsp;</td></tr>'
+    . '<tr><td style="padding-top:14px;">'
+    . '<table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    . '<td style="vertical-align:middle;padding-right:7px;"><img src="' . $SITE . '/images/logo.png" width="18" height="18" alt="" style="display:block;border:0;"></td>'
+    . '<td style="vertical-align:middle;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#9AA0A6;"><a href="' . $SITE . '" style="color:#9AA0A6;text-decoration:none;">gloriatech.co</a></td>'
+    . '</tr></table></td></tr>'
 
-        <tr>
-          <td align="center" style="padding:26px 0 8px 0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#9AA0A6;">
-            Gloria &middot; <a href="' . $SITE . '" style="color:#9AA0A6;">gloriatech.co</a>
-          </td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
-</table>
-</body>
-</html>';
+    . '</table></td></tr></table></body></html>';
 
 $text = "New demo request from gloriatech.co\n\n"
-    . "Name: $name\nEmail: $email\nPhone: " . ($phone ?: 'Not provided') . "\n"
-    . "Community type: " . ($community ?: 'Not provided') . "\n"
-    . "How they heard about Gloria: " . ($heard ?: 'Not provided') . "\n"
-    . "How we can help: " . ($help ?: 'Not provided') . "\n\n"
-    . "Submitted on $submitted\n";
+    . 'Name: ' . $name . "\n"
+    . 'Email: ' . $email . "\n"
+    . 'Phone: ' . ($phone !== '' ? $phone : 'Not provided') . "\n"
+    . 'Community type: ' . ($community !== '' ? $community : 'Not provided') . "\n"
+    . 'How they heard about Gloria: ' . ($heard !== '' ? $heard : 'Not provided') . "\n"
+    . 'How we can help: ' . ($help !== '' ? $help : 'Not provided') . "\n\n"
+    . 'Submitted ' . $submitted . "\n";
 
 $subject = 'New demo request from gloriatech.co';
 $config  = __DIR__ . '/config.php';
-$smtp    = is_readable($config) ? (require $config) : null;
+$smtp    = is_readable($config) ? require $config : null;
 $sent    = false;
 
 if (is_array($smtp) && !empty($smtp['host']) && !empty($smtp['username'])) {
@@ -177,19 +142,19 @@ if (is_array($smtp) && !empty($smtp['host']) && !empty($smtp['username'])) {
 
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
     try {
+        $port = (int) ($smtp['port'] ?? 587);
         $mail->isSMTP();
         $mail->Host       = $smtp['host'];
-        $mail->Port       = (int) ($smtp['port'] ?? 587);
+        $mail->Port       = $port;
         $mail->SMTPAuth   = true;
         $mail->Username   = $smtp['username'];
         $mail->Password   = $smtp['password'] ?? '';
-        $mail->SMTPSecure = ($mail->Port === 465)
+        $mail->SMTPSecure = ($port === 465)
             ? PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS
             : PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->CharSet    = 'UTF-8';
-        $mail->Timeout    = 20;
-
-        $mail->setFrom($smtp['from'] ?? $smtp['username'], $smtp['from_name'] ?? 'Gloria Website');
+        $mail->CharSet = 'UTF-8';
+        $mail->Timeout = 20;
+        $mail->setFrom($smtp['from'] ?? $FROM_ADDR, $smtp['from_name'] ?? $FROM_NAME);
         $mail->addAddress($to);
         $mail->addReplyTo($email, $name);
         $mail->Subject = $subject;
@@ -205,209 +170,24 @@ if (is_array($smtp) && !empty($smtp['host']) && !empty($smtp['username'])) {
 
 if (!$sent) {
     $boundary = 'gloria-' . bin2hex(random_bytes(12));
-    $headers  = "From: $FROM\r\n"
-        . "Reply-To: " . str_replace(["\r", "\n"], '', $name) . " <$email>\r\n"
-        . "MIME-Version: 1.0\r\n"
-        . "Content-Type: multipart/alternative; boundary=\"$boundary\"\r\n"
-        . "X-Mailer: gloriatech.co demo form\r\n";
+    $headers  = 'From: ' . $FROM_NAME . ' <' . $FROM_ADDR . '>' . "\r\n"
+        . 'Reply-To: ' . str_replace(["\r", "\n"], '', $name) . ' <' . $email . '>' . "\r\n"
+        . 'MIME-Version: 1.0' . "\r\n"
+        . 'Content-Type: multipart/alternative; boundary="' . $boundary . '"' . "\r\n"
+        . 'X-Mailer: gloriatech.co demo form' . "\r\n";
 
-    $body = "--$boundary\r\n"
-        . "Content-Type: text/plain; charset=UTF-8\r\n"
-        . "Content-Transfer-Encoding: 8bit\r\n\r\n"
+    $body = '--' . $boundary . "\r\n"
+        . 'Content-Type: text/plain; charset=UTF-8' . "\r\n"
+        . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
         . $text . "\r\n"
-        . "--$boundary\r\n"
-        . "Content-Type: text/html; charset=UTF-8\r\n"
-        . "Content-Transfer-Encoding: 8bit\r\n\r\n"
+        . '--' . $boundary . "\r\n"
+        . 'Content-Type: text/html; charset=UTF-8' . "\r\n"
+        . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
         . $html . "\r\n"
-        . "--$boundary--\r\n";
+        . '--' . $boundary . '--' . "\r\n";
 
-    $sent = @mail($to, $subject, $body, $headers, '-f ' . ($smtp['from'] ?? 'noreply@gloriatech.co'));
+    $sent = @mail($to, $subject, $body, $headers, '-f ' . $FROM_ADDR);
 }
-
-// Last resort while SMTP credentials are pending: hand the submission to the
-// form relay, which is authorized to send for this domain. Keeps leads from
-// being lost silently; the branded email above takes over once config.php
-// exists. Remove this block when SMTP is configured.
-if (!$sent) {
-    $payload = json_encode([
-        'Name'                        => $name,
-        'Email'                       => $email,
-        'Phone'                       => $phone,
-        'Community type'              => $community,
-        'How they heard about Gloria' => $heard,
-        'How we can help'             => $help,
-        '_subject'                    => $subject,
-        '_template'                   => 'table',
-        '_replyto'                    => $email,
-    ]);
-    $ch = curl_init('https://formsubmit.co/ajax/' . rawurlencode($to));
-    curl_setopt_array($ch, [
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => $payload,
-        CURLOPT_HTTPHEADER     => ['Content-Type: application/json', 'Accept: application/json'],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 15,
-    ]);
-    $relay = curl_exec($ch);
-    $code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    $sent = $code === 200 && is_string($relay) && str_contains($relay, '"success"');
-    if (!$sent) {
-        error_log('[demo form] relay send failed: HTTP ' . $code . ' ' . substr((string) $relay, 0, 200));
-    }
-}
-
-header('Location: ' . $CONFIRM, true, 303);
-    exit;
-}
-
-$field = static function (string $key, int $max = 500): string {
-    $v = isset($_POST[$key]) ? (string) $_POST[$key] : '';
-    $v = trim(preg_replace('/[\r\n\t]+/', ' ', $v) ?? '');
-    return mb_substr($v, 0, $max);
-};
-
-$name      = $field('Name', 120);
-$email     = $field('Email', 200);
-$phone     = $field('Phone', 40);
-$community = $field('Community type', 80);
-$heard     = $field('How they heard about Gloria', 120);
-$help      = $field('How we can help', 2000);
-
-if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: ' . $FORM_PAGE . '?error=1', true, 303);
-    exit;
-}
-
-$toKey = isset($_GET['to']) && isset($RECIPIENTS[$_GET['to']]) ? $_GET['to'] : 'dave';
-$to    = $RECIPIENTS[$toKey];
-
-$submitted = gmdate('D, M j, Y \a\t g:i A') . ' (UTC)';
-$e = static fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-$rows = [
-    ['Name',                        $e($name)],
-    ['Email',                       '<a href="mailto:' . $e($email) . '" style="color:#E4520B;text-decoration:underline;">' . $e($email) . '</a>'],
-    ['Phone',                       $phone !== '' ? $e($phone) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['Community type',              $community !== '' ? $e($community) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['How they heard about Gloria', $heard !== '' ? $e($heard) : '<span style="color:#9AA0A6;">Not provided</span>'],
-    ['How we can help',             $help !== '' ? nl2br($e($help)) : '<span style="color:#9AA0A6;">Not provided</span>'],
-];
-
-$rowsHtml = '';
-$last = count($rows) - 1;
-foreach ($rows as $i => [$label, $value]) {
-    $border = $i === $last ? '' : 'border-bottom:1px solid #F1E9E2;';
-    $rowsHtml .= '
-      <tr>
-        <td style="padding:16px 18px;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#6B6F76;width:42%;vertical-align:top;">' . $e($label) . '</td>
-        <td style="padding:16px 18px;' . $border . 'font-family:Helvetica,Arial,sans-serif;font-size:16px;color:#1A2B47;vertical-align:top;line-height:1.5;">' . $value . '</td>
-      </tr>';
-}
-
-$html = '<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<title>New demo request</title>
-</head>
-<body style="margin:0;padding:0;background:#FDF3EA;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FDF3EA;">
-  <tr>
-    <td align="center" style="padding:28px 12px;">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-
-        <tr>
-          <td style="padding:0 0 18px 0;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="vertical-align:middle;padding:0 0 0 6px;">
-                  <table role="presentation" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="vertical-align:middle;padding-right:8px;"><img src="' . $SITE . '/images/logo.png" width="34" height="34" alt="" style="display:block;border:0;"></td>
-                      <td style="vertical-align:middle;font-family:Helvetica,Arial,sans-serif;font-size:30px;font-weight:700;color:#F4600B;letter-spacing:-0.5px;">Gloria</td>
-                    </tr>
-                  </table>
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#8A6B58;padding:6px 0 0 2px;">PEOPLE &nbsp;&middot;&nbsp; CONNECTION &nbsp;&middot;&nbsp; CARE</div>
-                </td>
-                <td width="230" style="vertical-align:middle;">
-                  <img src="' . $SITE . '/images/closing-image.jpg" width="230" alt="" style="display:block;border:0;width:230px;height:130px;object-fit:cover;border-radius:18px;">
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <tr>
-          <td style="background:#FFFFFF;border-radius:22px;padding:28px 26px 22px 26px;box-shadow:0 12px 30px rgba(90,50,20,0.08);">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td width="64" style="vertical-align:top;">
-                  <div style="width:56px;height:56px;border-radius:28px;background:#FFE7D6;text-align:center;line-height:56px;font-family:Helvetica,Arial,sans-serif;font-size:26px;color:#F4600B;">&#9993;</div>
-                </td>
-                <td style="vertical-align:top;padding-left:14px;">
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:28px;font-weight:700;color:#1A2B47;line-height:1.2;">New demo request</div>
-                  <div style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#4B5058;padding-top:6px;line-height:1.5;">Someone just submitted the demo form on <a href="' . $FORM_PAGE . '" style="color:#E4520B;">gloriatech.co/demo</a>.</div>
-                </td>
-              </tr>
-            </table>
-
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border:1px solid #F1E9E2;border-radius:16px;border-collapse:separate;overflow:hidden;">' . $rowsHtml . '
-            </table>
-
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;background:#FFF1E6;border-radius:14px;">
-              <tr>
-                <td style="padding:16px 18px;font-family:Helvetica,Arial,sans-serif;">
-                  <div style="font-size:15px;font-weight:700;color:#1A2B47;">Submitted on</div>
-                  <div style="font-size:14px;color:#6B6F76;padding-top:3px;">' . $e($submitted) . '</div>
-                </td>
-              </tr>
-            </table>
-
-            <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B6F76;padding-top:18px;line-height:1.5;">Reply to this email to answer ' . $e($name) . ' directly.</div>
-          </td>
-        </tr>
-
-        <tr>
-          <td align="center" style="padding:26px 0 8px 0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#9AA0A6;">
-            Gloria &middot; <a href="' . $SITE . '" style="color:#9AA0A6;">gloriatech.co</a>
-          </td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
-</table>
-</body>
-</html>';
-
-$text = "New demo request from gloriatech.co\n\n"
-    . "Name: $name\nEmail: $email\nPhone: " . ($phone ?: 'Not provided') . "\n"
-    . "Community type: " . ($community ?: 'Not provided') . "\n"
-    . "How they heard about Gloria: " . ($heard ?: 'Not provided') . "\n"
-    . "How we can help: " . ($help ?: 'Not provided') . "\n\n"
-    . "Submitted on $submitted\n";
-
-$boundary = 'gloria-' . bin2hex(random_bytes(12));
-$headers  = "From: $FROM\r\n"
-    . "Reply-To: " . str_replace(["\r", "\n"], '', $name) . " <$email>\r\n"
-    . "MIME-Version: 1.0\r\n"
-    . "Content-Type: multipart/alternative; boundary=\"$boundary\"\r\n"
-    . "X-Mailer: gloriatech.co demo form\r\n";
-
-$body = "--$boundary\r\n"
-    . "Content-Type: text/plain; charset=UTF-8\r\n"
-    . "Content-Transfer-Encoding: 8bit\r\n\r\n"
-    . $text . "\r\n"
-    . "--$boundary\r\n"
-    . "Content-Type: text/html; charset=UTF-8\r\n"
-    . "Content-Transfer-Encoding: 8bit\r\n\r\n"
-    . $html . "\r\n"
-    . "--$boundary--\r\n";
-
-$subject = 'New demo request from gloriatech.co';
-$sent = @mail($to, $subject, $body, $headers, '-f noreply@gloriatech.co');
 
 header('Location: ' . $CONFIRM . ($sent ? '' : '?sent=0'), true, 303);
 exit;
