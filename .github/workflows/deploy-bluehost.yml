@@ -5,10 +5,11 @@
 #      no notes) and rewrites <base href="/Gloria-Front-Facing/"> to "/", since
 #      GitHub Pages serves the preview under a folder and Bluehost serves the
 #      real site at the domain root.
-#   2. Mirrors dist to the web root over SFTP with a dedicated deploy key
-#      (Bluehost allows SFTP with the key even though shell access is off, so
-#      rsync-over-ssh is not an option). Files on the server that are not in
-#      the repo are left alone, so nothing outside this repo is ever removed.
+#   2. Uploads dist to the web root over SFTP with OpenSSH's sftp client and a
+#      dedicated deploy key (Bluehost allows SFTP with the key even though
+#      shell access is off, so rsync-over-ssh is not an option). Every file in
+#      dist is sent; files on the server that are not in the repo are left
+#      alone, so nothing outside this repo is ever removed.
 #
 # Secrets (GitHub repo settings -> Secrets and variables -> Actions):
 #   BLUEHOST_SSH_HOST   server IP or host, e.g. 50.6.2.223
@@ -19,8 +20,8 @@
 #   BLUEHOST_WEB_ROOT   document root relative to the account home,
 #                       e.g. public_html/website_02deece1
 #
-# Run it by hand from the Actions tab with "dry run" ticked to list what would
-# change without uploading anything.
+# Run it by hand from the Actions tab with "dry run" ticked to print the
+# upload plan without connecting.
 
 name: Deploy to Bluehost
 
@@ -30,7 +31,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Dry run (list changes, upload nothing)"
+        description: "Dry run (print the upload plan, upload nothing)"
         type: boolean
         default: false
 
@@ -65,10 +66,24 @@ jobs:
             echo "A file still references the GitHub Pages folder"; exit 1
           fi
 
-      - name: Install lftp
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Write the upload plan
+        env:
+          WEB_ROOT: ${{ vars.BLUEHOST_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          test -n "$WEB_ROOT"
+          {
+            # Directories first (leading dash: ignore "already exists").
+            find dist -mindepth 1 -type d | sort | sed "s#^dist/#-mkdir $WEB_ROOT/#"
+            # Then every file.
+            find dist -type f | sort | sed "s#^dist/\(.*\)#put dist/\1 $WEB_ROOT/\1#"
+            echo "bye"
+          } > upload.sftp
+          echo "Upload plan: $(grep -c '^put ' upload.sftp) files, $(grep -c '^-mkdir ' upload.sftp) directories"
+          cat upload.sftp
 
       - name: Set up the deploy key
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
@@ -78,19 +93,13 @@ jobs:
           ssh-keyscan -p 22 -H "${{ secrets.BLUEHOST_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Upload to Bluehost over SFTP
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         env:
           HOST: ${{ secrets.BLUEHOST_SSH_HOST }}
           USER: ${{ secrets.BLUEHOST_SSH_USER }}
           WEB_ROOT: ${{ vars.BLUEHOST_WEB_ROOT }}
-          DRY: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
         run: |
           set -euo pipefail
-          test -n "$WEB_ROOT"
-          lftp -e "
-            set sftp:connect-program 'ssh -a -x -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes';
-            set net:max-retries 2;
-            set net:timeout 30;
-            mirror -R --verbose --no-perms $DRY dist/ $WEB_ROOT/;
-            quit
-          " "sftp://$USER@$HOST"
-          echo "Deployed dist to $USER@$HOST:$WEB_ROOT${DRY:+ (dry run)}"
+          sftp -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 \
+            -b upload.sftp "$USER@$HOST" | grep -E '^(Uploading|-?mkdir)' || true
+          echo "Deployed $(grep -c '^put ' upload.sftp) files to $USER@$HOST:$WEB_ROOT"
