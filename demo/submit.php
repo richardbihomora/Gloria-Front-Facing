@@ -1,9 +1,11 @@
 <?php
 // Demo request handler for gloriatech.co/demo/.
 //
-// Receives the demo form, emails the sales inbox with the prospect as Reply-To,
-// then redirects to the confirmation page. Runs on the site's own host; no
-// third-party form service and no ads in the email.
+// Receives the demo form, emails the sales inbox from a no-reply sender, then
+// redirects to the confirmation page. Runs on the site's own host; no
+// third-party form service and no ads in the email. The email carries no
+// Reply-To on purpose: it tells the reader not to reply and to use the
+// prospect's address in the body instead.
 //
 // Delivery note: gloriatech.co receives mail at Google Workspace. cPanel had
 // the domain set to "Local Mail Exchanger", so anything the server sent to an
@@ -110,7 +112,7 @@ $html = '<!DOCTYPE html>'
     . '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rowsHtml . '</table></td></tr>'
 
     . '<tr><td style="padding-top:20px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B7280;line-height:1.6;">'
-    . 'Submitted ' . $e($submitted) . '<br>Automated notification from an address that is not monitored. A reply to this email goes to the person who filled in the form.'
+    . 'Submitted ' . $e($submitted) . '<br>This is an automated notification. Please do not reply to this email. Use the email address above to contact them.'
     . '</td></tr>'
 
     . '<tr><td style="padding-top:28px;border-top:1px solid #EDEFF2;font-size:0;line-height:0;">&nbsp;</td></tr>'
@@ -130,7 +132,7 @@ $text = "New demo request from gloriatech.co\n\n"
     . 'How they heard about Gloria: ' . ($heard !== '' ? $heard : 'Not provided') . "\n"
     . 'How we can help: ' . ($help !== '' ? $help : 'Not provided') . "\n\n"
     . 'Submitted ' . $submitted . "\n"
-    . "Automated notification from an address that is not monitored. A reply to this email goes to the person who filled in the form.\n";
+    . "This is an automated notification. Please do not reply to this email. Use the email address above to contact them.\n";
 
 $subject = 'New demo request from gloriatech.co';
 $config  = __DIR__ . '/config.php';
@@ -158,7 +160,6 @@ if (is_array($smtp) && !empty($smtp['host']) && !empty($smtp['username'])) {
         $mail->Timeout = 20;
         $mail->setFrom($smtp['from'] ?? $FROM_ADDR, $smtp['from_name'] ?? $FROM_NAME);
         $mail->addAddress($to);
-        $mail->addReplyTo($email, $name);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body    = $html;
@@ -173,7 +174,6 @@ if (is_array($smtp) && !empty($smtp['host']) && !empty($smtp['username'])) {
 if (!$sent) {
     $boundary = 'gloria-' . bin2hex(random_bytes(12));
     $headers  = 'From: ' . $FROM_NAME . ' <' . $FROM_ADDR . '>' . "\r\n"
-        . 'Reply-To: ' . str_replace(["\r", "\n"], '', $name) . ' <' . $email . '>' . "\r\n"
         . 'MIME-Version: 1.0' . "\r\n"
         . 'Content-Type: multipart/alternative; boundary="' . $boundary . '"' . "\r\n"
         . 'X-Mailer: gloriatech.co demo form' . "\r\n";
