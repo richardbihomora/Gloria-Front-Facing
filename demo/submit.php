@@ -109,7 +109,7 @@ $html = '<!DOCTYPE html>'
     . '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rowsHtml . '</table></td></tr>'
 
     . '<tr><td style="padding-top:20px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B7280;line-height:1.6;">'
-    . 'Submitted ' . $e($submitted) . '<br>Reply to this email to answer ' . $e($name) . ' directly.'
+    . 'Submitted ' . $e($submitted) . '<br>Replying to this email goes straight to them.'
     . '</td></tr>'
 
     . '<tr><td style="padding-top:28px;border-top:1px solid #EDEFF2;font-size:0;line-height:0;">&nbsp;</td></tr>'
