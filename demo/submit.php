@@ -64,7 +64,8 @@ if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $toKey = (isset($_GET['to']) && isset($RECIPIENTS[$_GET['to']])) ? $_GET['to'] : 'dave';
 $to    = $RECIPIENTS[$toKey];
 
-$submitted = gmdate('D, M j, Y \a\t g:i A') . ' (UTC)';
+$submitted = (new DateTime('now', new DateTimeZone('America/Los_Angeles')))
+    ->format('D, M j, Y \a\t g:i A T');
 $e = static function (string $s): string {
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 };
@@ -109,7 +110,7 @@ $html = '<!DOCTYPE html>'
     . '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $rowsHtml . '</table></td></tr>'
 
     . '<tr><td style="padding-top:20px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#6B7280;line-height:1.6;">'
-    . 'Submitted ' . $e($submitted) . '<br>Replying to this email goes straight to them.'
+    . 'Submitted ' . $e($submitted) . '<br>Automated notification from an address that is not monitored. A reply to this email goes to the person who filled in the form.'
     . '</td></tr>'
 
     . '<tr><td style="padding-top:28px;border-top:1px solid #EDEFF2;font-size:0;line-height:0;">&nbsp;</td></tr>'
@@ -128,7 +129,8 @@ $text = "New demo request from gloriatech.co\n\n"
     . 'Community type: ' . ($community !== '' ? $community : 'Not provided') . "\n"
     . 'How they heard about Gloria: ' . ($heard !== '' ? $heard : 'Not provided') . "\n"
     . 'How we can help: ' . ($help !== '' ? $help : 'Not provided') . "\n\n"
-    . 'Submitted ' . $submitted . "\n";
+    . 'Submitted ' . $submitted . "\n"
+    . "Automated notification from an address that is not monitored. A reply to this email goes to the person who filled in the form.\n";
 
 $subject = 'New demo request from gloriatech.co';
 $config  = __DIR__ . '/config.php';
