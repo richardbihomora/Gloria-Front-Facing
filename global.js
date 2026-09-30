@@ -281,7 +281,7 @@ function getCustomMessage(input) {
 const priceRange = document.getElementById('resident-range');
 if (priceRange) {
   // $/resident/month by active-resident band. Keep in sync with the
-  // .tier-list markup on pricing/index.html. Minimum 25 residents.
+  // .tier-list markup on pricing/index.html. Billed minimum is 25 residents.
   const TIERS = [
     { min: 25,  max: 50,  rate: 15 },
     { min: 51,  max: 75,  rate: 14 },
