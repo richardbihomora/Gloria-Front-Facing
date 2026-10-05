@@ -1,0 +1,18 @@
+# Gloria website. This folder sits inside a WordPress install, so without its
+# own rules it inherits WordPress's "send every missing page to /index.php" rule.
+# There is no index.php here, so a missing page looped into a 500 error.
+# Turning the rewrite engine on here stops the parent's rules running for this
+# folder, so the two parent rules we still want are restated below.
+RewriteEngine On
+
+# Always use HTTPS (restated from the parent).
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Bluehost's caching cookie (restated from the parent's Newfold block; the
+# parent's Header rule sets the cookie when CF_OPT is set).
+RewriteCond %{HTTP_COOKIE} !(^|;\s*)nfd-enable-cf-opt=63a6825d27cab0f204d3b602 [NC]
+RewriteRule .* - [E=CF_OPT:1]
+
+# Missing pages get a real "page not found".
+ErrorDocument 404 /404.html

@@ -64,6 +64,8 @@ jobs:
             --exclude '.nojekyll' \
             --exclude '*.md' \
             --exclude '.retired-pages' \
+            --exclude '.gitignore' \
+            --exclude '.gitattributes' \
             ./ dist/
           # Serve from the domain root on Bluehost.
           find dist -name '*.html' -print0 | xargs -0 sed -i 's#<base href="/Gloria-Front-Facing/">#<base href="/">#'
@@ -83,12 +85,14 @@ jobs:
             find dist -mindepth 1 -type d | sort | sed "s#^dist/#-mkdir $WEB_ROOT/#"
             # Then every file.
             find dist -type f | sort | sed "s#^dist/\(.*\)#put dist/\1 $WEB_ROOT/\1#"
-            # Retired pages (.retired-pages): delete their index.html and folder.
-            # Leading dash: a page that is already gone does not fail the deploy.
+            # Retired paths (.retired-pages): a page folder (its index.html, then the
+            # folder) or a single file. Leading dash: whichever form does not apply,
+            # or a path that is already gone, does not fail the deploy.
             if [ -f .retired-pages ]; then
-              grep -v '^#' .retired-pages | grep -E '^[a-z0-9][a-z0-9/-]*$' | while read -r page; do
+              grep -v '^#' .retired-pages | grep -E '^[a-z0-9.][a-z0-9./-]*$' | grep -v '\.\.' | while read -r page; do
                 echo "-rm $WEB_ROOT/$page/index.html"
                 echo "-rmdir $WEB_ROOT/$page"
+                echo "-rm $WEB_ROOT/$page"
               done
             fi
             echo "bye"
