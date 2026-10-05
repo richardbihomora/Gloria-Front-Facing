@@ -9,7 +9,8 @@
 #      dedicated deploy key (Bluehost allows SFTP with the key even though
 #      shell access is off, so rsync-over-ssh is not an option). Every file in
 #      dist is sent; files on the server that are not in the repo are left
-#      alone, so nothing outside this repo is ever removed.
+#      alone, so nothing outside this repo is ever removed, EXCEPT the pages
+#      listed in .retired-pages, which are deleted on every deploy.
 #
 # Secrets (GitHub repo settings -> Secrets and variables -> Actions):
 #   BLUEHOST_SSH_HOST   server IP or host, e.g. 50.6.2.223
@@ -58,6 +59,7 @@ jobs:
             --exclude '.DS_Store' \
             --exclude '.nojekyll' \
             --exclude '*.md' \
+            --exclude '.retired-pages' \
             ./ dist/
           # Serve from the domain root on Bluehost.
           find dist -name '*.html' -print0 | xargs -0 sed -i 's#<base href="/Gloria-Front-Facing/">#<base href="/">#'
@@ -77,6 +79,14 @@ jobs:
             find dist -mindepth 1 -type d | sort | sed "s#^dist/#-mkdir $WEB_ROOT/#"
             # Then every file.
             find dist -type f | sort | sed "s#^dist/\(.*\)#put dist/\1 $WEB_ROOT/\1#"
+            # Retired pages (.retired-pages): delete their index.html and folder.
+            # Leading dash: a page that is already gone does not fail the deploy.
+            if [ -f .retired-pages ]; then
+              grep -v '^#' .retired-pages | grep -E '^[a-z0-9][a-z0-9/-]*$' | while read -r page; do
+                echo "-rm $WEB_ROOT/$page/index.html"
+                echo "-rmdir $WEB_ROOT/$page"
+              done
+            fi
             echo "bye"
           } > upload.sftp
           echo "Upload plan: $(grep -c '^put ' upload.sftp) files, $(grep -c '^-mkdir ' upload.sftp) directories"
@@ -101,5 +111,5 @@ jobs:
         run: |
           set -euo pipefail
           sftp -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 \
-            -b upload.sftp "$USER@$HOST" | grep -E '^(Uploading|-?mkdir)' || true
+            -b upload.sftp "$USER@$HOST" | grep -E '^(Uploading|-?mkdir|-?rm|Removing)' || true
           echo "Deployed $(grep -c '^put ' upload.sftp) files to $USER@$HOST:$WEB_ROOT"

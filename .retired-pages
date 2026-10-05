@@ -1,0 +1,4 @@
+# Pages removed from the site. The deploy uploads files but never deletes,
+# so each path listed here (a folder holding only index.html) is deleted
+# from the server on every deploy. One path per line, relative to the web root.
+terms
