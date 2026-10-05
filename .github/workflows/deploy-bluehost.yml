@@ -35,6 +35,10 @@ on:
         description: "Dry run (print the upload plan, upload nothing)"
         type: boolean
         default: false
+      inspect:
+        description: "Inspect only (list the web root and print its .htaccess files; upload nothing)"
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-bluehost
@@ -102,8 +106,22 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p 22 -H "${{ secrets.BLUEHOST_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
+      - name: Inspect the web root (read only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.inspect }}
+        env:
+          HOST: ${{ secrets.BLUEHOST_SSH_HOST }}
+          USER: ${{ secrets.BLUEHOST_SSH_USER }}
+          WEB_ROOT: ${{ vars.BLUEHOST_WEB_ROOT }}
+        run: |
+          set -uo pipefail
+          mkdir -p inspect
+          printf '%s\n' "ls -la $WEB_ROOT" "ls -la $WEB_ROOT/.." "-get $WEB_ROOT/.htaccess inspect/webroot.htaccess" "-get $WEB_ROOT/../.htaccess inspect/parent.htaccess" "bye" > inspect.sftp
+          sftp -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -b inspect.sftp "$USER@$HOST"
+          for f in inspect/*.htaccess; do [ -f "$f" ] && { echo "===== $f"; cat "$f"; }; done
+          echo "Inspect only: nothing uploaded"
+
       - name: Upload to Bluehost over SFTP
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (inputs.dry_run || inputs.inspect)) }}
         env:
           HOST: ${{ secrets.BLUEHOST_SSH_HOST }}
           USER: ${{ secrets.BLUEHOST_SSH_USER }}
